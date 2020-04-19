@@ -240,32 +240,45 @@ public class doubleLinkedList implements ILinkedList{
      */
     @Override
     public ILinkedList sublist(int fromIndex, int toIndex){
-        int size = toIndex-fromIndex+1;
-        ILinkedList newList;
-        doubleLinkedList newOne = new doubleLinkedList();
-        doubleLinkedListNode temp;
-        temp = header;
-        int i=0;
-        while (temp.getNext()!=trailer&i<fromIndex){
-            i++;
-            temp=temp.getNext();
+        if(fromIndex<=toIndex&toIndex<size()&size()>=(toIndex - fromIndex + 1)&toIndex - fromIndex + 1>1) {
+            int size = toIndex - fromIndex + 1;
+            ILinkedList newList;
+            doubleLinkedList newOne = new doubleLinkedList();
+            doubleLinkedListNode temp;
+            temp = header.getNext();
+            int i = 0;
+            while (temp.getNext() != trailer & i < fromIndex) {
+                i++;
+                temp = temp.getNext();
+            }
+            if (temp.getNext() == trailer & i < fromIndex) {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
+            } else {
+                doubleLinkedListNode newNode = new doubleLinkedListNode(temp.getElement(),null,null);
+                newOne.header = new doubleLinkedListNode(null, null, newNode);
+                newOne.trailer = new doubleLinkedListNode(null, newNode, null);
+                i = 1;
+                newOne.size++;
+                while (i <= size) {
+                    temp = temp.getNext();
+                    newOne.add(temp.getElement());
+                    i++;
+                }
+            }
+            newList = newOne;
+            return newList;
         }
-        if (temp.getNext()==trailer&i<fromIndex){
-            //here should be an exception
+        else if (toIndex - fromIndex + 1 ==1&size()>0&toIndex<size()){
+            ILinkedList newList;
+            doubleLinkedList newOne = new doubleLinkedList();
+            newOne.add(get(fromIndex));
+            return newOne;
         }
         else{
-            doubleLinkedListNode newNode=temp;
-            newOne.header=new doubleLinkedListNode(null,null,newNode);
-            newOne.trailer=new doubleLinkedListNode(null,newNode,null);
-            i=1;
-            newOne.size++;
-            while (i<=size){
-                temp=temp.getNext();
-                newOne.add(temp.getElement());
-            }
+            RuntimeException Runtime = new RuntimeException();
+            throw Runtime;
         }
-        newList = newOne;
-        return newList;
     }
     /**
      *  @param o
