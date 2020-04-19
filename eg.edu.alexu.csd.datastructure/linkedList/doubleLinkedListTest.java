@@ -307,17 +307,30 @@ public class doubleLinkedListTest {
         assertEquals(false,e.contains(100));
     }
     @org.junit.jupiter.api.Test
+    void sublistTestZero() {
+        //empty linked list
+        doubleLinkedList e = null;
+        assertThrows(NullPointerException.class,()->e.sublist(0,5));
+        assertThrows(NullPointerException.class,()->e.sublist(0,0));
+    }
+    @org.junit.jupiter.api.Test
     void sublistTestOne() {
         //empty linked list
         doubleLinkedList e = new doubleLinkedList();
-
+        assertThrows(RuntimeException.class,()->e.sublist(0,5));
+        assertThrows(RuntimeException.class,()->e.sublist(0,0));
     }
     @org.junit.jupiter.api.Test
     void sublistTestTwo() {
         //linked list with one element
         doubleLinkedList e = new doubleLinkedList();
         e.add(45);
-
+        ILinkedList l = new doubleLinkedList();
+        l=e.sublist(0,0);
+        assertEquals(true,e.contains(45));
+        assertEquals(45,e.get(0));
+        assertThrows(RuntimeException.class,()->e.sublist(0,5));
+        assertThrows(RuntimeException.class,()->e.sublist(0,-1));
     }
     @org.junit.jupiter.api.Test
     void sublistTestThere() {
@@ -325,5 +338,47 @@ public class doubleLinkedListTest {
         doubleLinkedList e = new doubleLinkedList();
         e.add(45);
         e.add(50);
+        ILinkedList l = new doubleLinkedList();
+        l=e.sublist(0,0);
+        assertEquals(true,l.contains(45));
+        assertEquals(45,l.get(0));
+        ILinkedList i = new doubleLinkedList();
+        i=e.sublist(0,1);
+        assertEquals(true,i.contains(45));
+        assertEquals(45,i.get(0));
+        assertEquals(true,i.contains(50));
+        assertEquals(50,i.get(1));
+        assertThrows(RuntimeException.class,()->e.sublist(0,5));
+        assertThrows(RuntimeException.class,()->e.sublist(0,-1));
     }
+    @org.junit.jupiter.api.Test
+    void sublistTestFour() {
+        doubleLinkedList e = new doubleLinkedList();
+        e.add(45);
+        e.add(50);
+        e.add(55);//45,50,55
+        ILinkedList l = new doubleLinkedList();
+        l=e.sublist(0,0);
+        assertEquals(true,l.contains(45));
+        assertEquals(45,l.get(0));
+        ILinkedList i = new doubleLinkedList();
+        i=e.sublist(0,1);
+        assertEquals(true,i.contains(45));
+        assertEquals(45,i.get(0));
+        assertEquals(true,i.contains(50));
+        assertEquals(50,i.get(1));
+        assertThrows(RuntimeException.class,()->e.sublist(0,5));
+        assertThrows(RuntimeException.class,()->e.sublist(0,-1));
+        ILinkedList j = new doubleLinkedList();
+        j=e.sublist(0,2);
+        assertEquals(true,j.contains(45));
+        assertEquals(45,j.get(0));
+        assertEquals(true,j.contains(50));
+        assertEquals(50,j.get(1));
+        assertEquals(true,j.contains(55));
+        assertEquals(55,j.get(2));
+        assertThrows(RuntimeException.class,()->e.sublist(0,5));
+        assertThrows(RuntimeException.class,()->e.sublist(0,-1));
+    }
+
 }
