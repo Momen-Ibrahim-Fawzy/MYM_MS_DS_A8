@@ -258,9 +258,11 @@ public class doubleLinkedList implements ILinkedList{
                 doubleLinkedListNode newNode = new doubleLinkedListNode(temp.getElement(),null,null);
                 newOne.header = new doubleLinkedListNode(null, null, newNode);
                 newOne.trailer = new doubleLinkedListNode(null, newNode, null);
+                newNode.setPrev(newOne.header);
+                newNode.setNext(newOne.trailer);
                 i = 1;
                 newOne.size++;
-                while (i <= size) {
+                while (i < size) {
                     temp = temp.getNext();
                     newOne.add(temp.getElement());
                     i++;
@@ -338,6 +340,30 @@ public class doubleLinkedList implements ILinkedList{
         while(n.getNext()!=trailer) {
             n=n.getNext();
             System.out.println(Arrays.toString((int[])n.getElement()));
+        }
+    }
+    public void swap(int i , int j){
+        if (i<size()&j<size()){
+            doubleLinkedListNode temp1 = header;
+            int k = 0;
+            while (temp1.getNext() != trailer & k <= i) {
+                k++;
+                temp1 = temp1.getNext();
+            }
+            doubleLinkedListNode temp2 = header;
+            k = 0;
+            while (temp2.getNext() != trailer & k <= j) {
+                k++;
+                temp2 = temp2.getNext();
+            }
+            Object temp=temp1.getElement();
+            temp1.setElement(temp2.getElement());
+            temp2.setElement(temp);
+        }
+        else {
+            //System.out.println("the list is short");
+            RuntimeException Runtime = new RuntimeException();
+            throw Runtime;
         }
     }
 }
