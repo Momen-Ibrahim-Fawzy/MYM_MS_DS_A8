@@ -380,5 +380,20 @@ public class doubleLinkedListTest {
         assertThrows(RuntimeException.class,()->e.sublist(0,5));
         assertThrows(RuntimeException.class,()->e.sublist(0,-1));
     }
-
+    @org.junit.jupiter.api.Test
+    void sublistTestFive() {
+        doubleLinkedList e = new doubleLinkedList();
+        e.add(45);
+        e.add(50);
+        e.add(55);//45,50,55
+        ILinkedList j = new doubleLinkedList();
+        j=e.sublist(0,e.size()-1);
+        assertEquals(true,j.contains(45));
+        assertEquals(45,j.get(0));
+        assertEquals(true,j.contains(50));
+        assertEquals(50,j.get(1));
+        assertEquals(true,j.contains(55));
+        assertEquals(55,j.get(2));
+        assertEquals(3,j.size());
+    }
 }
