@@ -8,7 +8,7 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.Date;
 
-public class mail {
+public class mail implements IMail{
     private Date date;
     private String sender;
     private IQueue receiver;
