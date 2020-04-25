@@ -32,7 +32,7 @@ public class sort implements ISort{
      * @return a sorted double linked list of folders of e_mails by date(Newest To Oldest)
      */
     @Override
-    public doubleLinkedList sortByDateNewestToOldest() throws ParseException, IOException {
+    public doubleLinkedList sortByDateOldestToNewest() throws ParseException, IOException {
         if (m.size()>0) {
             doubleLinkedList mails = new doubleLinkedList();
             mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
@@ -90,9 +90,9 @@ public class sort implements ISort{
      * @return a sorted double linked list of folders of e_mails by date(Oldest To Newest)
      */
     @Override
-    public doubleLinkedList sortByDateOldestToNewest() throws ParseException, IOException {
+    public doubleLinkedList sortByDateNewestToOldest() throws ParseException, IOException {
         doubleLinkedList mails = new doubleLinkedList();
-        mails = sortByDateNewestToOldest();
+        mails = sortByDateOldestToNewest();
         for (int i=0;i<mails.size()/2;i++){
             mails.swap(i,mails.size()-1-i);
         }
@@ -320,8 +320,8 @@ public class sort implements ISort{
      * @return the number of lines in the body file in that folder
      */
     private int numOfLinesInBody(File f) throws IOException {
-        Scanner sc = new Scanner(new File(f + "\\body.txt"));
-        FileReader fr=new FileReader(new File(f + "\\body.txt"));
+        String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
+        FileReader fr=new FileReader(new File(f+"\\"+line + ".txt"));
         BufferedReader br=new BufferedReader(fr);
         int numOfLines = 0;
         String line1;
@@ -405,7 +405,8 @@ public class sort implements ISort{
      * @return the number of words in the body file in that folder
      */
     private int numOfWordsInBody(File f) throws IOException {
-        FileReader fr=new FileReader(new File(f + "\\body.txt"));
+        String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
+        FileReader fr=new FileReader(new File(f+"\\"+line + ".txt"));
         BufferedReader br=new BufferedReader(fr);
         int numOfWords=0;
         String line1;
@@ -490,7 +491,8 @@ public class sort implements ISort{
      * @return the number of Letters in the body file in that folder
      */
     private int numOfLettersInBody(File f) throws IOException {
-        FileReader fr=new FileReader(new File(f + "\\body.txt"));
+        String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
+        FileReader fr=new FileReader(new File(f+"\\"+line + ".txt"));
         BufferedReader br=new BufferedReader(fr);
         int numOfLetters=0;
         String line1;
@@ -577,7 +579,7 @@ public class sort implements ISort{
      * @return the number of lines in the Receivers file in that folder
      */
     private int numOfLinesInReceivers(File f) throws IOException {
-        Scanner sc = new Scanner(new File(f + "\\Receivers.txt"));
+        //Scanner sc = new Scanner(new File(f + "\\Receivers.txt"));
         FileReader fr=new FileReader(new File(f + "\\Receivers.txt"));
         BufferedReader br=new BufferedReader(fr);
         int numOfLines = 0;
@@ -661,7 +663,8 @@ public class sort implements ISort{
      * @param f is a file that we want to calculate its number of lines(Attachments)
      * @return the number of lines in the Attachments file in that folder
      */
-    private int numOfLinesInAttachments(File f) throws IOException {
+    private int numOfAttachments(File f) throws IOException {
+        /*
         Scanner sc = new Scanner(new File(f + "\\Attachments.txt"));
         FileReader fr=new FileReader(new File(f + "\\Attachments.txt"));
         BufferedReader br=new BufferedReader(fr);
@@ -671,6 +674,11 @@ public class sort implements ISort{
             numOfLines++;
         }
         return numOfLines;
+         */
+        File file = new File(f.getPath()+"\\Attachments\\");
+        File[] files= file.listFiles();
+        int num=files.length;
+        return num;
     }
 
     /**
@@ -694,11 +702,11 @@ public class sort implements ISort{
                 int p = start + ((end - start) / 2);
                 int l = start;
                 int h = end - 2;
-                int piv = numOfLinesInAttachments((File) mails.get(p));
+                int piv = numOfAttachments((File) mails.get(p));
                 mails.swap(p, end - 1);
                 while (l < h) {
-                    int inl = numOfLinesInAttachments((File) mails.get(l));
-                    int inh = numOfLinesInAttachments((File) mails.get(h));
+                    int inl = numOfAttachments((File) mails.get(l));
+                    int inh = numOfAttachments((File) mails.get(h));
                     if (inl < piv) {
                         l++;
                     } else if (inh >= piv) {
@@ -708,7 +716,7 @@ public class sort implements ISort{
                     }
                 }
                 int idx = h;
-                int inh = numOfLinesInAttachments((File) mails.get(h));
+                int inh = numOfAttachments((File) mails.get(h));
                 if (inh < piv) {
                     idx++;
                 }
