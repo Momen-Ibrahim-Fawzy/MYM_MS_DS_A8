@@ -83,18 +83,22 @@ public class contact implements IContact{
     public String getFirstEmail(){
         return (String)emails.get(0);
     }
+
+
     public void addContact(SingleLinkedList emails) throws IOException {
+        for(int i=0;i<emails.size();i++) {
+            if (!folder.check_exist_username((String) emails.get(i))) {
+                throw new RuntimeException("email is not in server");
+            }
+
+        }
         File file=new File(getFolder().getPath()+"/"+getName()+".txt");
         file.createNewFile();
         FileWriter fw = new FileWriter(file);
-        for(int i=0;i<emails.size();i++) {
-           if(folder.check_exist_username((String) emails.get(i))) {
-               fw.write((String) emails.get(i));
+        for(int j=0;j<emails.size();j++) {
+               fw.write((String) emails.get(j));
                fw.write("\r\n");   // write new line
-           }
-           else{
-               System.out.println("email is not in server");
-           }
+
         }
         fw.flush();
         fw.close();
@@ -118,6 +122,8 @@ public class contact implements IContact{
 
     }
     public void addEmail(String email) throws IOException {
+        if(folder.check_exist_username(email))
+            throw new RuntimeException("email is not in server");
         emails.add(email);
         addContact(emails);
     }
