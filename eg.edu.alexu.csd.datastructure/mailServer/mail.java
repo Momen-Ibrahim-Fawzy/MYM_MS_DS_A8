@@ -8,7 +8,7 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.Date;
 
-public class mail implements IMail{
+public class mail {
     private Date date;
     private String sender;
     private IQueue receiver;
@@ -85,9 +85,29 @@ public class mail implements IMail{
 
 
     public void draft() throws IOException {
-        File file = new File("System/" + getSender() + "/drafts/" + getSubject());
+        File file10=new File("System/num.txt");
+        FileReader x = new FileReader(file10);
+        BufferedReader in=new BufferedReader(x);
+        String line=in.readLine();
+        in.close();
+        int num = Integer.parseInt(line);
+        num++;
+        FileWriter x1=new FileWriter(file10);
+        x1.write(Integer.toString(num));
+        x1.flush();
+        x1.close();
+
+
+        File indexSent= new File("System/" + getSender() + "/Draft/index.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(indexSent.getPath(), true) );
+        writer.write(getDate().toString());
+        writer.newLine();
+        writer.write(getSubject());
+        writer.newLine();
+
+        File file = new File("System/" + getSender() + "/Draft/" + line);
         file.mkdir();
-        File file1 = new File("System/" + getSender() + "/drafts/" + getSubject() + "/" + getSubject() + ".txt");
+        File file1 = new File("System/" + getSender() + "/Draft/" + line + "/" + getSubject() + ".txt");
         FileWriter fr = new FileWriter(file1);
         fr.write(getTextBody());
         fr.write("\r\n");
@@ -95,7 +115,7 @@ public class mail implements IMail{
         fr.close();
 
         folder folder=new folder();
-        File file6=new File("System/" + getSender() + "/drafts/" + getSubject() + "/attachments");
+        File file6=new File("System/" + getSender() + "/Draft/" + line + "/attachments");
         file6.mkdir();
 
         for (int i = 0; i < getAttachment().size(); i++) {
@@ -105,7 +125,7 @@ public class mail implements IMail{
             folder.copyFileUsingChannel(f2,f1);
         }
 
-        File file2 = new File("System/" + getSender() + "/drafts/" + getSubject() + "/index.txt");
+        File file2 = new File("System/" + getSender() + "/Draft/" + line + "/index.txt");
         FileWriter fw = new FileWriter(file2);
         fw.write(getDate().toString());
         fw.write("\r\n");   // write new line
@@ -118,13 +138,18 @@ public class mail implements IMail{
         fw.flush();
         fw.close();
 
-        File file8=new File("System/" + getSender() +"/drafts/" + getSubject() +"/receivers.txt");
+        File file8=new File("System/" + getSender() +"/Draft/" +line +"/receivers.txt");
         FileWriter n=new FileWriter(file8);
         while (!receiver.isEmpty()) {
             String temp = getReceiver().dequeue().toString();
             n.write(temp);
             n.write("\r\n");
+            writer.write(temp);
+            if(!receiver.isEmpty())
+                writer.write(",");
         }
+        writer.newLine();
+        writer.close();
         n.flush();
         n.close();
     }
@@ -132,10 +157,30 @@ public class mail implements IMail{
 
 
     public void send() throws IOException {
-        File file = new File("System/" + getSender() + "/sent/" + getSubject());
+        File file10=new File("System/num.txt");
+        FileReader x = new FileReader(file10);
+        BufferedReader in=new BufferedReader(x);
+        String line=in.readLine();
+        in.close();
+        int num = Integer.parseInt(line);
+        num++;
+        FileWriter x1=new FileWriter(file10);
+        x1.write(Integer.toString(num));
+        x1.flush();
+        x1.close();
+
+        File indexSent= new File("System/" + getSender() + "/Sent/index.txt");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(indexSent.getPath(), true) );
+        writer.write(getDate().toString());
+        writer.newLine();
+        writer.write(getSubject());
+        writer.newLine();
+
+
+        File file = new File("System/" + getSender() + "/Sent/" + line);
         file.mkdir();
 
-        File file1 = new File("System/" + getSender() + "/sent/" + getSubject() + "/" + getSubject() + ".txt");
+        File file1 = new File("System/" + getSender() + "/Sent/" + line + "/" + getSubject() + ".txt");
         FileWriter fr = new FileWriter(file1);
         fr.write(getTextBody());
         fr.write("\r\n");
@@ -143,7 +188,7 @@ public class mail implements IMail{
         fr.close();
 
         folder folder=new folder();
-        File file6=new File("System/" + getSender() + "/sent/" + getSubject() + "/attachments");
+        File file6=new File("System/" + getSender() + "/Sent/" + line + "/attachments");
         file6.mkdir();
 
         for (int i = 0; i < getAttachment().size(); i++) {
@@ -153,7 +198,7 @@ public class mail implements IMail{
             folder.copyFileUsingChannel(f2,f1);
         }
 
-        File file2 = new File("System/" + getSender() + "/sent/" + getSubject() + "/index.txt");
+        File file2 = new File("System/" + getSender() + "/Sent/" + line + "/index.txt");
         FileWriter fw = new FileWriter(file2);
         fw.write(getDate().toString());
         fw.write("\r\n");   // write new line
@@ -166,21 +211,21 @@ public class mail implements IMail{
         fw.flush();
         fw.close();
 
-        File file8=new File("System/" + getSender() +"/sent/" + getSubject() +"/receivers.txt");
+        File file8=new File("System/" + getSender() +"/Sent/" + line +"/receivers.txt");
         FileWriter n=new FileWriter(file8);
         while (!receiver.isEmpty()) {
             String temp = getReceiver().dequeue().toString();
-            File file3 = new File("System/" + temp + "/inbox/" + getSubject());
+            File file3 = new File("System/" + temp + "/Inbox/" + line);
             file3.mkdir();
-            File file4 = new File("System/" + temp + "/inbox/" + getSubject() + "/receivers.txt");
+            File file4 = new File("System/" + temp + "/Inbox/" +line + "/receivers.txt");
             FileWriter f = new FileWriter(file4);
             f.write(temp);
             f.write("\r\n");
             f.flush();
             f.close();
-            File file5 = new File("System/" + temp + "/inbox/" + getSubject() +"/"+ getSubject() +".txt");
+            File file5 = new File("System/" + temp + "/Inbox/" + line +"/"+ getSubject() +".txt");
             folder.copyFileUsingChannel(file1,file5);
-           File file7=new File("System/" + temp + "/inbox/" + getSubject()+"/attachments");
+           File file7=new File("System/" + temp + "/Inbox/" + line+"/attachments");
            file7.mkdir();
             for (int i = 0; i < getAttachment().size(); i++) {
                 File f2=new File(getAttachment().get(i).toString());
@@ -188,11 +233,27 @@ public class mail implements IMail{
 
                 folder.copyFileUsingChannel(f2,f1);
             }
-            File file9 = new File("System/" + temp + "/inbox/" + getSubject() + "/index.txt");
+            File file9 = new File("System/" + temp + "/Inbox/" + line + "/index.txt");
             folder.copyFileUsingChannel(file2,file9);
             n.write(temp);
             n.write("\r\n");
+
+            File indexInbox= new File("System/" + temp + "/Inbox/index.txt");
+            BufferedWriter writer1 = new BufferedWriter(new FileWriter(indexInbox.getPath(), true) );
+            writer1.write(getDate().toString());
+            writer1.newLine();
+            writer1.write(getSubject());
+            writer1.newLine();
+            writer1.write(getSender());
+            writer1.newLine();
+            writer1.close();
+            writer.write(temp);
+            if(!receiver.isEmpty())
+                writer.write(",");
+
         }
+        writer.newLine();
+        writer.close();
         n.flush();
         n.close();
 
