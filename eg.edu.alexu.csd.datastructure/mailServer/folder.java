@@ -20,6 +20,7 @@ import java.util.Calendar;
 public class folder implements IFolder {
     private File system=new File("System");
     private File index=new File("System/indexOfUser.txt");
+    private File num=new File("System/num.txt");
     private String UserName;
     private String PassWord;
     private String path;
@@ -32,11 +33,17 @@ public class folder implements IFolder {
             system.mkdir();
             try {
                 index.createNewFile();
+                num.createNewFile();
+                FileWriter x1=new FileWriter(num);
+                x1.write(Integer.toString(1));
+                x1.flush();
+                x1.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
+
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,10 +70,10 @@ public class folder implements IFolder {
     }
 
 
-    public void SignUP(String userName ,String password) {
+    /*public void SignUP(String userName ,String password) {
         creat_users_folder(userName ,password);
     }
-
+*/
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,21 +138,21 @@ public class folder implements IFolder {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void creat_users_folder(String userName ,String password) {
-        boolean check=check_exist_username(userName);
+    public void creat_users_folder(contact contact) {
+        boolean check=check_exist_username(contact.getFirstEmail());
         System.out.println(check);
         if(check)
             System.out.println("folder is exist");
         else {
-            File user=new File("System/"+userName);
+            File user=new File("System/"+contact.getFirstEmail());
             user.mkdir();
-            create_sub_folders(userName,password);
+            create_sub_folders(contact);
             System.out.println("folder is create");
             try {
                 BufferedWriter write=new BufferedWriter(new FileWriter(index,true));
-                write.write(userName);
+                write.write(contact.getFirstEmail());
                 write.newLine();
-                write.write(password);
+                write.write(contact.getPassword());
                 write.newLine();
                 write.close();
             } catch (IOException e) {
@@ -160,13 +167,20 @@ public class folder implements IFolder {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////after login we need to create a folders to the new account.
-    public void create_sub_folders(String userName,String password) {
-        File user=new File("System/"+userName+"/Contact");
-        File user1=new File("System/"+userName+"/Draft");
-        File user2=new File("System/"+userName+"/Inbox");
-        File user3=new File("System/"+userName+"/Sent");
-        File user4=new File("System/"+userName+"/Trash");
-        File user5=new File("System/"+userName+"/IndexUserInfo");
+    public void create_sub_folders(contact contact) {
+        File user=new File("System/"+contact.getFirstEmail()+"/Contact");
+        File user1=new File("System/"+contact.getFirstEmail()+"/Draft");
+        File user2=new File("System/"+contact.getFirstEmail()+"/Inbox");
+        File user3=new File("System/"+contact.getFirstEmail()+"/Sent");
+        File user4=new File("System/"+contact.getFirstEmail()+"/Trash");
+        File user5=new File("System/"+contact.getFirstEmail()+"/IndexUserInfo.txt");
+        File user6=new File("System/"+contact.getFirstEmail()+"/Contact/index.txt");
+        File user7=new File("System/"+contact.getFirstEmail()+"/Draft/index.txt");
+        File user8=new File("System/"+contact.getFirstEmail()+"/Inbox/index.txt");
+        File user9=new File("System/"+contact.getFirstEmail()+"/Sent/index.txt");
+        File user10=new File("System/"+contact.getFirstEmail()+"/Trash/index.txt");
+
+
         user.mkdir();
         user1.mkdir();
         user2.mkdir();
@@ -175,9 +189,15 @@ public class folder implements IFolder {
         try {
             user5.createNewFile();
             BufferedWriter write=new BufferedWriter(new FileWriter(user5,true));
-            write.write(userName);
+            write.write(contact.getName());
             write.newLine();
-            write.write(password);
+            write.write(contact.getFirstEmail());
+            write.newLine();
+            write.write(contact.getPassword());
+            write.newLine();
+            write.write(contact.getBirthDate());
+            write.newLine();
+            write.write(contact.getGender());
             write.newLine();
             DateFormat df=new SimpleDateFormat("dd/MM/yyyy \nHH:mm:ss");
             Calendar co=Calendar.getInstance();
@@ -397,7 +417,7 @@ public class folder implements IFolder {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-   /*
+
     public void copy_files(String name1 , String name2) {
         File f1=new File(name1);
         File f2=new File(name2);
@@ -425,7 +445,7 @@ public class folder implements IFolder {
 
     }
 
-    */
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////sent the path of the folder then it will delete
