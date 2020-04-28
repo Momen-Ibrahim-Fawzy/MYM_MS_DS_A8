@@ -459,14 +459,22 @@ public class app implements IApp {
         return new IMail[0];
     }
 
-    @Override
+   @Override
     public void deleteEmails(ILinkedList mails) {
-
+        IFolder des = new folder() ;
+        des.setPath(folder.backStep()+"/Trash");
+        moveEmails(mails,des);
     }
 
     @Override
     public void moveEmails(ILinkedList mails, IFolder des) {
-
+       for (int i=0;i<mails.size();i++){
+            try {
+                folder.move(((File)mails.get(i)).getPath(),des.getPath()+"/"+((File)mails.get(i)).getName());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
