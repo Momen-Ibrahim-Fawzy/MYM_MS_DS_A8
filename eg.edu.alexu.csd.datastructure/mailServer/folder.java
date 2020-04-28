@@ -1,7 +1,9 @@
 package eg.edu.alexu.csd.datastructure.mailServer;
 
+import eg.edu.alexu.csd.datastructure.linkedList.ILinkedList;
+import eg.edu.alexu.csd.datastructure.linkedList.SingleLinkedList;
 import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
-
+import eg.edu.alexu.csd.datastructure.mailServer.mail;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,8 +18,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class folder implements IFolder {
     private File system=new File("System");
@@ -375,10 +379,10 @@ public class folder implements IFolder {
     }
 
 
-    public  void move(File f1,File f2) throws IOException {
+    public  void move(String path1,String path2) throws IOException {
         Path temp = Files.move
-                (Paths.get(f1.getPath()),
-                        Paths.get(f2.getPath()));
+                (Paths.get(path1),
+                        Paths.get(path2));
 
         if(temp != null)
         {
@@ -468,6 +472,40 @@ public class folder implements IFolder {
         return true;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public int [][] num_of_word(String path_name) {
+        int[][]arr=new int[1][2];
+        File f1=new File(path_name);
+        int num_of_word=0;
+        int num_of_line=0;
+        FileReader fr;
+        try {
+            fr = new FileReader(f1);
+            @SuppressWarnings("resource")
+            BufferedReader in=new BufferedReader(fr);
+            String line1;
+            while(!((line1=in.readLine())==null)) {
+                num_of_word+=num_in_line(line1);
+                num_of_line++;
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        arr[0][0]=num_of_line;
+        arr[0][1]=num_of_word;
+        return arr;
+    }
+
+    private int num_in_line(String line1) {
+        if(line1==null||line1.isEmpty())
+            return 0;
+        String []words=line1.split("\\s+");
+        return words.length;
+    }
+
+
     public String getPath() {
         return path;
     }
@@ -477,7 +515,7 @@ public class folder implements IFolder {
     }
 
     public String backStep(){
-        String[] arr = getPath().split("/", 5);
+        String[] arr = getPath().split("/" , 5);
         String[] arr2=new String[arr.length-1];
         for (int i=0;i<arr.length-1;i++){
             arr2[i]=arr[i];
@@ -507,20 +545,30 @@ public class folder implements IFolder {
         }
         return back;
     }
-
     public doubleLinkedList getMailsFolders (){
+
         File f =new File(getPath());
+
         File[] files = f.listFiles();
+
         doubleLinkedList mails = new doubleLinkedList();
+
         for (int i=0 ; i<files.length;i++){
+
             if (files[i].isDirectory()){
+
                 mails.add(files[i]);
+
             }
+
         }
+
         return mails;
+
     }
-    
-     public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException {
+
+
+    public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException {
         doubleLinkedList list=new doubleLinkedList();
         int num=0;
         int count=0;
@@ -563,5 +611,6 @@ public class folder implements IFolder {
         }
         return list;
     }
+
 
 }
