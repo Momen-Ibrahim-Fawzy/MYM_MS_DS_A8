@@ -12,8 +12,30 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class sort implements ISort{
-
+    /**
+     * sortByDateOldestToNewest or sortByDateNewestToOldest or sortAscendingBySubject or sortDescendingBySubject
+     * or sortAscendingBySender or sortDescendingBySender or sortAscendingByPriority or sortDescendingByPriority
+     * or sortAscendingByNumOfLinesInBody or sortDescendingByNumOfLinesInBody or sortAscendingByNumOfWordsInBody
+     * or sortDescendingByNumOfWordsInBody or sortAscendingByNumOfLettersInBody or sortDescendingByNumOfLettersInBody
+     * or sortAscendingByNumOfReceivers or sortDescendingByNumOfReceivers or sortAscendingByNumOfAttachments
+     * or sortDescendingByNumOfAttachments
+     */
+    private String type="";
     private doubleLinkedList m = new doubleLinkedList();
+    /**
+     * get the type of the sorting
+     * @return type of the sorting
+     */
+    public String getType() {
+        return type;
+    }
+    /**
+     * set the type of the sorting
+     * @param type
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
     /**
      * @param mails the double linked list of the e_mails to be sort
      * it set the double linked list of the e_mails
