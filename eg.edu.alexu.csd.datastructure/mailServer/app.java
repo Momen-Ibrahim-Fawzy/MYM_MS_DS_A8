@@ -4,9 +4,27 @@ import eg.edu.alexu.csd.datastructure.linkedList.ILinkedList;
 
 public class app implements IApp {
     public folder folder;
-
+    ////////momenEdition///////
+    private doubleLinkedList mails=new doubleLinkedList();//the double linked lis of arrays of mails
+    /**
+     * set the double linked list of arrays of mails
+     * @param m should be double linked list of arrays of mails
+     */
+    public void setMails(doubleLinkedList m){
+        if (m!=null) {
+            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+        }
+        else mails=null;
+    }
+    /**
+     * get the double linked list of arrays of mails
+     * @return the double linked list of arrays of mails
+     */
+    public doubleLinkedList getMails(){
+        return mails;
+    }
+    /////////////////////////
     public app(){
-
         folder=new folder();
         folder.setPath("System");
     }
