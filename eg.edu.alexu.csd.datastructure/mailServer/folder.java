@@ -519,4 +519,49 @@ public class folder implements IFolder {
         }
         return mails;
     }
+    
+     public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException {
+        doubleLinkedList list=new doubleLinkedList();
+        int num=0;
+        int count=0;
+        if(emails.size()%10==0){
+            num=emails.size()/10;
+        }
+        else {
+            num=(emails.size()/10)+1;
+        }
+        for (int i=0;i<num;i++){
+            mail[] arr=new mail[10];
+            for (int j=0;j<arr.length;j++){
+                if(count>=emails.size())
+                    break;
+
+                mail mail=new mail();
+                String subject=Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(1);
+                File receivers=new File(((File)emails.get(count)).getPath()+"/receivers.txt");
+                File attachments=new File(((File)emails.get(count)).getPath()+"/attachments");
+                File body=new File(((File)emails.get(count)).getPath()+"/"+subject+".txt");
+
+                String date = Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(0);
+                Date piv = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(date);
+                mail.setDate(piv);
+                mail.setSubject(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(1));
+                mail.setSender(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(2));
+                mail.setPriority(Integer.parseInt(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(3)));
+                FileReader fr = new FileReader(receivers);
+                BufferedReader in=new BufferedReader(fr);
+                String line;
+                while((line=in.readLine())!=null) {
+                    mail.setReceiver(line);
+                }
+                in.close();
+                mail.setTextBody((Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/"+subject+".txt")).get(0)));
+                arr[j]=mail;
+                count++;
+            }
+            list.add(arr);
+        }
+        return list;
+    }
+
 }
