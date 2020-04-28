@@ -17,7 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class folder implements IFolder {
+public class folder implements folder {
     private File system=new File("System");
     private File index=new File("System/indexOfUser.txt");
     private File num=new File("System/num.txt");
