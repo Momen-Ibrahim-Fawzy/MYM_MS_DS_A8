@@ -104,7 +104,10 @@ public class mail {
         writer.newLine();
         writer.write(getSubject());
         writer.newLine();
-
+        writer.write(getSender());
+        writer.newLine();
+        
+        
         File file = new File("System/" + getSender() + "/Draft/" + line);
         file.mkdir();
         File file1 = new File("System/" + getSender() + "/Draft/" + line + "/" + getSubject() + ".txt");
@@ -153,8 +156,6 @@ public class mail {
         n.flush();
         n.close();
     }
-
-
 
     public void send() throws IOException {
         File file10=new File("System/num.txt");
