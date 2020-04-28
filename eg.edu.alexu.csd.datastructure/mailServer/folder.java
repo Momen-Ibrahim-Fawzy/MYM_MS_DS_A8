@@ -1,5 +1,7 @@
 package eg.edu.alexu.csd.datastructure.mailServer;
 
+import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -466,40 +468,6 @@ public class folder implements IFolder {
         return true;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public int [][] num_of_word(String path_name) {
-        int[][]arr=new int[1][2];
-        File f1=new File(path_name);
-        int num_of_word=0;
-        int num_of_line=0;
-        FileReader fr;
-        try {
-            fr = new FileReader(f1);
-            @SuppressWarnings("resource")
-            BufferedReader in=new BufferedReader(fr);
-            String line1;
-            while(!((line1=in.readLine())==null)) {
-                num_of_word+=num_in_line(line1);
-                num_of_line++;
-            }
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        arr[0][0]=num_of_line;
-        arr[0][1]=num_of_word;
-        return arr;
-    }
-
-    private int num_in_line(String line1) {
-        if(line1==null||line1.isEmpty())
-            return 0;
-        String []words=line1.split("\\s+");
-        return words.length;
-    }
-
-
     public String getPath() {
         return path;
     }
@@ -540,5 +508,15 @@ public class folder implements IFolder {
         return back;
     }
 
-
+    public doubleLinkedList getMailsFolders (){
+        File f =new File(getPath());
+        File[] files = f.listFiles();
+        doubleLinkedList mails = new doubleLinkedList();
+        for (int i=0 ; i<files.length;i++){
+            if (files[i].isDirectory()){
+                mails.add(files[i]);
+            }
+        }
+        return mails;
+    }
 }
