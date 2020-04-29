@@ -26,8 +26,9 @@ public class mail {
         textBody=null;
         subject=null;
     }
-    public void setDate(){
-        this.date=new Date();
+    public void setDate(Date date)
+    {
+        this.date=date;
     }
     public void setSender(String sender){
         folder folder= new folder();
@@ -106,8 +107,8 @@ public class mail {
         writer.newLine();
         writer.write(getSender());
         writer.newLine();
-        
-        
+
+
         File file = new File("System/" + getSender() + "/Draft/" + line);
         file.mkdir();
         File file1 = new File("System/" + getSender() + "/Draft/" + line + "/" + getSubject() + ".txt");
@@ -157,6 +158,8 @@ public class mail {
         n.close();
     }
 
+
+
     public void send() throws IOException {
         File file10=new File("System/num.txt");
         FileReader x = new FileReader(file10);
@@ -175,6 +178,8 @@ public class mail {
         writer.write(getDate().toString());
         writer.newLine();
         writer.write(getSubject());
+        writer.newLine();
+        writer.write(getSender());
         writer.newLine();
 
 
@@ -246,6 +251,8 @@ public class mail {
             writer1.write(getSubject());
             writer1.newLine();
             writer1.write(getSender());
+            writer1.newLine();
+            writer1.write(temp);
             writer1.newLine();
             writer1.close();
             writer.write(temp);
