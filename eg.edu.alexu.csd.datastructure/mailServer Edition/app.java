@@ -5,7 +5,6 @@ import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 
 public class app implements IApp{
     public folder folder;
@@ -32,7 +31,7 @@ public class app implements IApp{
         folder.setPath("System");
     }
 
-    doubleLinkedList mailsToBeShown=new doubleLinkedList();
+    private doubleLinkedList mailsToBeShown=new doubleLinkedList();
     /**
      * set the mails to be shown
      * @param mailsToBeShown the new emails to be shown
@@ -50,7 +49,7 @@ public class app implements IApp{
 
     @Override
     public boolean signin(String email, String password) {
-        boolean check1=folder.checkExistUsername(email);
+        boolean check1=folder.checkExistUserName(email);
         boolean check2=folder.checkPassword(email,password);
         if(check1==true && check2==true)
             return true;
@@ -59,7 +58,7 @@ public class app implements IApp{
 
     @Override
     public boolean signup(IContact contact) {
-        if(folder.checkExistUsername(contact.getFirstEmail()))
+        if(folder.checkExistUserName(contact.getFirstEmail()))
             return  false;
 
         return true;
@@ -488,7 +487,13 @@ public class app implements IApp{
     }
     @Override
     public IMail[] listEmails(int page) {
-        return (IMail[])mailsToBeShown.get(page-1);
+        if (page>0&mailsToBeShown!=null) {
+            return (IMail[]) mailsToBeShown.get(page - 1);
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
     @Override
