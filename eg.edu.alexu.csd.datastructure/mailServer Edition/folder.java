@@ -46,35 +46,6 @@ public class folder implements IFolder{
             }
         }
     }
-
-    //////////////////////// I do not know what is the user of that method//////////////////////
-    /*public void SignIn(String userName ,String password) {
-        if(check_exist_username(userName)) {
-            while(true) {
-                if(check_password(userName ,password)) {
-                    UserName=userName;
-                    PassWord=password;
-                    check_sub_folders(UserName);
-                    break;
-                }
-                else {
-                    System.out.println("email is found and wrong password");
-                    System.out.println("please enter the correct password");
-                }
-            }
-        }
-        else {
-            System.out.println("sign up to create anew email");
-        }
-    }
-     */
-
-
-    /*public void SignUP(String userName ,String password) {
-        creat_users_folder(userName ,password);
-    }
-*/
-
     /**
      * check if the user name is stored or not
      * @param username the user name which wanted to be checked
