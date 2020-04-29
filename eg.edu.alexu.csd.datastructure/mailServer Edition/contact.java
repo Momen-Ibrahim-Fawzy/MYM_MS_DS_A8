@@ -28,20 +28,26 @@ public class contact implements IContact{
      */
     @Override
     public boolean checkEmail(String email){
-        if(!email.matches("^[a-zA-Z0-9-_@.]*$" )){
-            return false;
+        if (email!=null) {
+            if (!email.matches("^[a-zA-Z0-9-_@.]*$")) {
+                return false;
+            }
+            String[] arr = email.split("@", 5);
+            if (arr.length > 2) {
+                return false;
+            }
+            if (arr[1].length() != 7) {
+                return false;
+            }
+            if (!email.contains("@mym.com")) {
+                return false;
+            }
+            return true;
         }
-        String[] arr=email.split("@",5);
-        if (arr.length>2){
-            return false;
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
-        if(arr[1].length()!=7){
-            return false;
-        }
-        if(!email.contains("@mym.com")){
-            return false;
-        }
-        return true;
     }
     /**
      * set the name of the contact
@@ -144,22 +150,28 @@ public class contact implements IContact{
      */
     @Override
     public void addContact(doubleLinkedList emails) throws IOException {
-        for(int i=0;i<emails.size();i++) {
-            if (!folder.checkExistUsername((String) emails.get(i))) {
-                throw new RuntimeException("email is not in server");
+        if (emails!=null) {
+            for (int i = 0; i < emails.size(); i++) {
+                if (!folder.checkExistUserName((String) emails.get(i))) {
+                    throw new RuntimeException("email is not in server");
+                }
+
             }
+            File file = new File(getFolder().getPath() + "/" + getName() + ".txt");
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file);
+            for (int j = 0; j < emails.size(); j++) {
+                fw.write((String) emails.get(j));
+                fw.write("\r\n");   // write new line
 
+            }
+            fw.flush();
+            fw.close();
         }
-        File file=new File(getFolder().getPath()+"/"+getName()+".txt");
-        file.createNewFile();
-        FileWriter fw = new FileWriter(file);
-        for(int j=0;j<emails.size();j++) {
-            fw.write((String) emails.get(j));
-            fw.write("\r\n");   // write new line
-
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
-        fw.flush();
-        fw.close();
     }
     /**
      * remove the contact file from the folder of the user
@@ -201,7 +213,7 @@ public class contact implements IContact{
      */
     @Override
     public void addEmail(String email) throws IOException {
-        if(folder.checkExistUsername(email))
+        if(folder.checkExistUserName(email))
             throw new RuntimeException("email is not in server");
         emails.add(email);
         addContact(emails);
