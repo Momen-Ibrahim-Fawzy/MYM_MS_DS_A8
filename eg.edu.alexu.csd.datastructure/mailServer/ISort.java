@@ -7,15 +7,25 @@ import java.text.ParseException;
 
 public interface ISort {
     /**
+     * get the type of the sorting
+     * @return type of the sorting
+     */
+    public String getType();
+    /**
+     * set the type of the sorting
+     * @param type
+     */
+    public void setType(String type);
+    /**
      * it sort the double linked list by the date of each e_main(Newest To Oldest)
      * @return a sorted double linked list of folders of e_mails by date(Newest To Oldest)
      */
-    public doubleLinkedList sortByDateNewestToOldest() throws ParseException, IOException ;
+    public doubleLinkedList sortByDateOldestToNewest() throws ParseException, IOException ;
     /**
      * it sort the double linked list by the date of each e_main(Oldest To Newest)
      * @return a sorted double linked list of folders of e_mails by date(Oldest To Newest)
      */
-    public doubleLinkedList sortByDateOldestToNewest() throws ParseException, IOException;
+    public doubleLinkedList sortByDateNewestToOldest() throws ParseException, IOException;
     /**
      * it sort the double linked list by the name of subject of each e_main
      * @return a sorted double linked list of folders of e_mails by the name of subject
