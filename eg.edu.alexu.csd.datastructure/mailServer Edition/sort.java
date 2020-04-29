@@ -55,55 +55,60 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortByDateOldestToNewest() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(0);
-                Date piv = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(0);
-                    Date inl = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
+                    }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(0);
+                    Date piv = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(0);
+                        Date inl = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+                        line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(0);
+                        Date inh = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+                        if (inl.before(piv)) {
+                            l++;
+                        } else if (inh.after(piv) | inh.equals(piv)) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
                     line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(0);
                     Date inh = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
-                    if (inl.before(piv)) {
-                        l++;
-                    } else if (inh.after(piv) | inh.equals(piv)) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+                    if (inh.before(piv)) {
+                        idx++;
                     }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(0);
-                Date inh = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
-                if (inh.before(piv)) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -126,55 +131,60 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingBySubject() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(1);
-                String piv = line.toLowerCase();
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(1);
-                    String inl = line.toLowerCase();
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
+                    }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(1);
+                    String piv = line.toLowerCase();
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(1);
+                        String inl = line.toLowerCase();
+                        line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(1);
+                        String inh = line.toLowerCase();
+                        if (inl.compareTo(piv) < 0) {
+                            l++;
+                        } else if (inh.compareTo(piv) > 0 | inh.equals(piv)) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
                     line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(1);
                     String inh = line.toLowerCase();
-                    if (inl.compareTo(piv) < 0) {
-                        l++;
-                    } else if (inh.compareTo(piv) > 0 | inh.equals(piv)) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+                    if (inh.compareTo(piv) < 0) {
+                        idx++;
                     }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(1);
-                String inh = line.toLowerCase();
-                if (inh.compareTo(piv) < 0) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -198,55 +208,60 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingBySender() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(2);
-                String piv = line.toLowerCase();
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(2);
-                    String inl = line.toLowerCase();
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
+                    }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(2);
+                    String piv = line.toLowerCase();
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(2);
+                        String inl = line.toLowerCase();
+                        line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(2);
+                        String inh = line.toLowerCase();
+                        if (inl.compareTo(piv) < 0) {
+                            l++;
+                        } else if (inh.compareTo(piv) > 0 | inh.equals(piv)) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
                     line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(2);
                     String inh = line.toLowerCase();
-                    if (inl.compareTo(piv) < 0) {
-                        l++;
-                    } else if (inh.compareTo(piv) > 0 | inh.equals(piv)) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+                    if (inh.compareTo(piv) < 0) {
+                        idx++;
                     }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(2);
-                String inh = line.toLowerCase();
-                if (inh.compareTo(piv) < 0) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -270,55 +285,60 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingByPriority() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(3);
-                int piv = Integer.parseInt(line);
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(3);
-                    int inl = Integer.parseInt(line);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
+                    }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    String line = Files.readAllLines(Paths.get(((File) mails.get(p)).getPath() + "\\index.txt")).get(3);
+                    int piv = Integer.parseInt(line);
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        line = Files.readAllLines(Paths.get(((File) mails.get(l)).getPath() + "\\index.txt")).get(3);
+                        int inl = Integer.parseInt(line);
+                        line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(3);
+                        int inh = Integer.parseInt(line);
+                        if (inl < piv) {
+                            l++;
+                        } else if (inh >= piv) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
                     line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(3);
                     int inh = Integer.parseInt(line);
-                    if (inl < piv) {
-                        l++;
-                    } else if (inh >= piv) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+                    if (inh < piv) {
+                        idx++;
                     }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                line = Files.readAllLines(Paths.get(((File) mails.get(h)).getPath() + "\\index.txt")).get(3);
-                int inh = Integer.parseInt(line);
-                if (inh < piv) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
-        else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+        else{
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -342,15 +362,21 @@ public class sort implements ISort{
      * @return the number of lines in the body file in that folder
      */
     private int numOfLinesInBody(File f) throws IOException {
-        String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
-        FileReader fr=new FileReader(new File(f+"\\"+line + ".txt"));
-        BufferedReader br=new BufferedReader(fr);
-        int numOfLines = 0;
-        String line1;
-        while (!((line1=br.readLine())==null)) {
-            numOfLines++;
+        if (f!=null) {
+            String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
+            FileReader fr = new FileReader(new File(f + "\\" + line + ".txt"));
+            BufferedReader br = new BufferedReader(fr);
+            int numOfLines = 0;
+            String line1;
+            while (!((line1 = br.readLine()) == null)) {
+                numOfLines++;
+            }
+            return numOfLines;
         }
-        return numOfLines;
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
     /**
@@ -359,51 +385,56 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingByNumOfLinesInBody() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                int piv = numOfLinesInBody((File) mails.get(p));
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    int inl = numOfLinesInBody((File) mails.get(l));
-                    int inh = numOfLinesInBody((File) mails.get(h));
-                    if (inl < piv) {
-                        l++;
-                    } else if (inh >= piv) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
                     }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    int piv = numOfLinesInBody((File) mails.get(p));
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        int inl = numOfLinesInBody((File) mails.get(l));
+                        int inh = numOfLinesInBody((File) mails.get(h));
+                        if (inl < piv) {
+                            l++;
+                        } else if (inh >= piv) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
+                    int inh = numOfLinesInBody((File) mails.get(h));
+                    if (inh < piv) {
+                        idx++;
+                    }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                int inh = numOfLinesInBody((File) mails.get(h));
-                if (inh < piv) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
-        else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+        else{
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -427,16 +458,22 @@ public class sort implements ISort{
      * @return the number of words in the body file in that folder
      */
     private int numOfWordsInBody(File f) throws IOException {
-        String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
-        FileReader fr=new FileReader(new File(f+"\\"+line + ".txt"));
-        BufferedReader br=new BufferedReader(fr);
-        int numOfWords=0;
-        String line1;
-        while (!((line1=br.readLine())==null)) {
-            String[] s=(line1.split(" "));
-            numOfWords+=s.length;
+        if (f!=null) {
+            String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
+            FileReader fr = new FileReader(new File(f + "\\" + line + ".txt"));
+            BufferedReader br = new BufferedReader(fr);
+            int numOfWords = 0;
+            String line1;
+            while (!((line1 = br.readLine()) == null)) {
+                String[] s = (line1.split(" "));
+                numOfWords += s.length;
+            }
+            return numOfWords;
         }
-        return numOfWords;
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
     /**
@@ -445,51 +482,56 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingByNumOfWordsInBody() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                int piv = numOfWordsInBody((File) mails.get(p));
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    int inl = numOfWordsInBody((File) mails.get(l));
-                    int inh = numOfWordsInBody((File) mails.get(h));
-                    if (inl < piv) {
-                        l++;
-                    } else if (inh >= piv) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
                     }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    int piv = numOfWordsInBody((File) mails.get(p));
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        int inl = numOfWordsInBody((File) mails.get(l));
+                        int inh = numOfWordsInBody((File) mails.get(h));
+                        if (inl < piv) {
+                            l++;
+                        } else if (inh >= piv) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
+                    int inh = numOfWordsInBody((File) mails.get(h));
+                    if (inh < piv) {
+                        idx++;
+                    }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                int inh = numOfWordsInBody((File) mails.get(h));
-                if (inh < piv) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -513,18 +555,24 @@ public class sort implements ISort{
      * @return the number of Letters in the body file in that folder
      */
     private int numOfLettersInBody(File f) throws IOException {
-        String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
-        FileReader fr=new FileReader(new File(f+"\\"+line + ".txt"));
-        BufferedReader br=new BufferedReader(fr);
-        int numOfLetters=0;
-        String line1;
-        while (!((line1=br.readLine())==null)) {
-            String[] s=(line1.split(" "));
-            for (int i=0 ; i<s.length;i++) {
-                numOfLetters += s[i].length();
+        if (f!=null) {
+            String line = Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1);
+            FileReader fr = new FileReader(new File(f + "\\" + line + ".txt"));
+            BufferedReader br = new BufferedReader(fr);
+            int numOfLetters = 0;
+            String line1;
+            while (!((line1 = br.readLine()) == null)) {
+                String[] s = (line1.split(" "));
+                for (int i = 0; i < s.length; i++) {
+                    numOfLetters += s[i].length();
+                }
             }
+            return numOfLetters;
         }
-        return numOfLetters;
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
     /**
@@ -533,51 +581,56 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingByNumOfLettersInBody() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                int piv = numOfLettersInBody((File) mails.get(p));
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    int inl = numOfLettersInBody((File) mails.get(l));
-                    int inh = numOfLettersInBody((File) mails.get(h));
-                    if (inl < piv) {
-                        l++;
-                    } else if (inh >= piv) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
                     }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    int piv = numOfLettersInBody((File) mails.get(p));
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        int inl = numOfLettersInBody((File) mails.get(l));
+                        int inh = numOfLettersInBody((File) mails.get(h));
+                        if (inl < piv) {
+                            l++;
+                        } else if (inh >= piv) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
+                    int inh = numOfLettersInBody((File) mails.get(h));
+                    if (inh < piv) {
+                        idx++;
+                    }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                int inh = numOfLettersInBody((File) mails.get(h));
-                if (inh < piv) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -602,14 +655,20 @@ public class sort implements ISort{
      */
     private int numOfLinesInReceivers(File f) throws IOException {
         //Scanner sc = new Scanner(new File(f + "\\Receivers.txt"));
-        FileReader fr=new FileReader(new File(f + "\\Receivers.txt"));
-        BufferedReader br=new BufferedReader(fr);
-        int numOfLines = 0;
-        String line1;
-        while (!((line1=br.readLine())==null)) {
-            numOfLines++;
+        if (f!=null) {
+            FileReader fr = new FileReader(new File(f + "\\Receivers.txt"));
+            BufferedReader br = new BufferedReader(fr);
+            int numOfLines = 0;
+            String line1;
+            while (!((line1 = br.readLine()) == null)) {
+                numOfLines++;
+            }
+            return numOfLines;
         }
-        return numOfLines;
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
     /**
@@ -618,51 +677,56 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingByNumOfReceivers() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                int piv = numOfLinesInReceivers((File) mails.get(p));
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    int inl = numOfLinesInReceivers((File) mails.get(l));
-                    int inh = numOfLinesInReceivers((File) mails.get(h));
-                    if (inl < piv) {
-                        l++;
-                    } else if (inh >= piv) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
                     }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    int piv = numOfLinesInReceivers((File) mails.get(p));
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        int inl = numOfLinesInReceivers((File) mails.get(l));
+                        int inh = numOfLinesInReceivers((File) mails.get(h));
+                        if (inl < piv) {
+                            l++;
+                        } else if (inh >= piv) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
+                    int inh = numOfLinesInReceivers((File) mails.get(h));
+                    if (inh < piv) {
+                        idx++;
+                    }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                int inh = numOfLinesInReceivers((File) mails.get(h));
-                if (inh < piv) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
@@ -697,10 +761,16 @@ public class sort implements ISort{
         }
         return numOfLines;
          */
-        File file = new File(f.getPath()+"\\Attachments\\");
-        File[] files= file.listFiles();
-        int num=files.length;
-        return num;
+        if (f!=null) {
+            File file = new File(f.getPath() + "\\Attachments\\");
+            File[] files = file.listFiles();
+            int num = files.length;
+            return num;
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
     /**
@@ -709,51 +779,56 @@ public class sort implements ISort{
      */
     @Override
     public doubleLinkedList sortAscendingByNumOfAttachments() throws ParseException, IOException {
-        if (m.size()>0) {
-            doubleLinkedList mails = new doubleLinkedList();
-            mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
-            Stack s = new Stack();
-            s.push(0);
-            s.push(mails.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (end - start < 2) {
-                    continue;
-                }
-                int p = start + ((end - start) / 2);
-                int l = start;
-                int h = end - 2;
-                int piv = numOfAttachments((File) mails.get(p));
-                mails.swap(p, end - 1);
-                while (l < h) {
-                    int inl = numOfAttachments((File) mails.get(l));
-                    int inh = numOfAttachments((File) mails.get(h));
-                    if (inl < piv) {
-                        l++;
-                    } else if (inh >= piv) {
-                        h--;
-                    } else {
-                        mails.swap(l, h);
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
                     }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    int piv = numOfAttachments((File) mails.get(p));
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        int inl = numOfAttachments((File) mails.get(l));
+                        int inh = numOfAttachments((File) mails.get(h));
+                        if (inl < piv) {
+                            l++;
+                        } else if (inh >= piv) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
+                    int inh = numOfAttachments((File) mails.get(h));
+                    if (inh < piv) {
+                        idx++;
+                    }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
                 }
-                int idx = h;
-                int inh = numOfAttachments((File) mails.get(h));
-                if (inh < piv) {
-                    idx++;
-                }
-                mails.swap(end - 1, idx);
-                p = idx;
-                s.push(p + 1);
-                s.push(end);
-                s.push(start);
-                s.push(p);
+                return mails;
+            } else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
             }
-            return mails;
         }
         else {
-            RuntimeException Runtime = new RuntimeException();
-            throw Runtime;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
     }
 
