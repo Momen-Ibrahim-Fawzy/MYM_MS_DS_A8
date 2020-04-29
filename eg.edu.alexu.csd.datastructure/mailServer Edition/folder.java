@@ -51,7 +51,7 @@ public class folder implements IFolder{
      * @param username the user name which wanted to be checked
      * @return false if the user name is not stored or true if it stored
      */
-    public boolean checkExistUsername(String username) {
+    public boolean checkExistUserName(String username) {
         if(username==null)
             return false;
         for(File f:system.listFiles()) {
@@ -119,7 +119,7 @@ public class folder implements IFolder{
      * @param contact which contain the user nameof that user
      */
     public void creatUsersFolder(contact contact) {
-        boolean check= checkExistUsername(contact.getFirstEmail());
+        boolean check= checkExistUserName(contact.getFirstEmail());
         System.out.println(check);
         if(check)
             System.out.println("folder is exist");
@@ -517,15 +517,21 @@ public class folder implements IFolder{
      * @return the mails in that folder in double linked list form of folders
      */
     public doubleLinkedList getMailsFolders (){
-        File f =new File(getPath());
-        File[] files = f.listFiles();
-        doubleLinkedList mails = new doubleLinkedList();
-        for (int i=0 ; i<files.length;i++){
-            if (files[i].isDirectory()){
-                mails.add(files[i]);
+        if (getPath()!=null) {
+            File f = new File(getPath());
+            File[] files = f.listFiles();
+            doubleLinkedList mails = new doubleLinkedList();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory()) {
+                    mails.add(files[i]);
+                }
             }
+            return mails;
         }
-        return mails;
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
     /**
      * convert the double linked of folders of emails
@@ -536,45 +542,50 @@ public class folder implements IFolder{
      * @throws ParseException if the parse was null
      */
     public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException {
-        doubleLinkedList list=new doubleLinkedList();
-        int num=0;
-        int count=0;
-        if(emails.size()%10==0){
-            num=emails.size()/10;
+        if (emails != null) {
+            doubleLinkedList list = new doubleLinkedList();
+            int num = 0;
+            int count = 0;
+            if (emails.size() % 10 == 0) {
+                num = emails.size() / 10;
+            } else {
+                num = (emails.size() / 10) + 1;
+            }
+            for (int i = 0; i < num; i++) {
+                mail[] arr = new mail[10];
+                for (int j = 0; j < arr.length; j++) {
+                    if (count >= emails.size()) {
+                        break;
+                    }
+                    mail mail = new mail();
+                    String subject = Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(1);
+                    File receivers = new File(((File) emails.get(count)).getPath() + "/receivers.txt");
+                    File attachments = new File(((File) emails.get(count)).getPath() + "/attachments");
+                    File body = new File(((File) emails.get(count)).getPath() + "/" + subject + ".txt");
+                    String date = Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(0);
+                    Date piv = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(date);
+                    mail.setDate(piv);
+                    mail.setSubject(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(1));
+                    mail.setSender(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(2));
+                    mail.setPriority(Integer.parseInt(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(3)));
+                    FileReader fr = new FileReader(receivers);
+                    BufferedReader in = new BufferedReader(fr);
+                    String line;
+                    while ((line = in.readLine()) != null) {
+                        mail.setReceiver(line);
+                    }
+                    in.close();
+                    mail.setTextBody((Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/" + subject + ".txt")).get(0)));
+                    arr[j] = mail;
+                    count++;
+                }
+                list.add(arr);
+            }
+            return list;
         }
         else {
-            num=(emails.size()/10)+1;
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
-        for (int i=0;i<num;i++){
-            mail[] arr=new mail[10];
-            for (int j=0;j<arr.length;j++){
-                if(count>=emails.size()) {
-                    break;
-                }
-                mail mail=new mail();
-                String subject=Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(1);
-                File receivers=new File(((File)emails.get(count)).getPath()+"/receivers.txt");
-                File attachments=new File(((File)emails.get(count)).getPath()+"/attachments");
-                File body=new File(((File)emails.get(count)).getPath()+"/"+subject+".txt");
-                String date = Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(0);
-                Date piv = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(date);
-                mail.setDate(piv);
-                mail.setSubject(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(1));
-                mail.setSender(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(2));
-                mail.setPriority(Integer.parseInt(Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/index.txt")).get(3)));
-                FileReader fr = new FileReader(receivers);
-                BufferedReader in=new BufferedReader(fr);
-                String line;
-                while((line=in.readLine())!=null) {
-                    mail.setReceiver(line);
-                }
-                in.close();
-                mail.setTextBody((Files.readAllLines(Paths.get(((File) emails.get(count)).getPath() + "/"+subject+".txt")).get(0)));
-                arr[j]=mail;
-                count++;
-            }
-            list.add(arr);
-        }
-        return list;
     }
 }
