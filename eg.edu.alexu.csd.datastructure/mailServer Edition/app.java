@@ -5,6 +5,7 @@ import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 public class app implements IApp{
     public folder folder;
@@ -31,6 +32,22 @@ public class app implements IApp{
         folder.setPath("System");
     }
 
+    doubleLinkedList mailsToBeShown=new doubleLinkedList();
+    /**
+     * set the mails to be shown
+     * @param mailsToBeShown the new emails to be shown
+     */
+    public void setMailsToBeShown(doubleLinkedList mailsToBeShown) {
+        this.mailsToBeShown = mailsToBeShown;
+    }
+    /**
+     * return the double linked list of the mails to be shown
+     * @return the double linked list of the mails to be shown
+     */
+    public doubleLinkedList getMailsToBeShown() {
+        return mailsToBeShown;
+    }
+
     @Override
     public boolean signin(String email, String password) {
         boolean check1=folder.checkExistUsername(email);
@@ -49,7 +66,6 @@ public class app implements IApp{
     }
     @Override
     public void setViewingOptions(IFolder folder, IFilter filter, ISort sort) {
-        doubleLinkedList mailsToBeShown=new doubleLinkedList();
         if(folder!=null){
             folder fold = (folder)folder;
             doubleLinkedList mails = (fold).getMailsFolders();
@@ -281,12 +297,20 @@ public class app implements IApp{
                             }
                             break;
                     }
-                    //maisToBeShown=LinkedListOfArrays(sortedMails);
-                    //then set it
+                    try {
+                        mailsToBeShown=folder.mails(sortedMails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
+                    }
                 }
                 else {
-                    //maisToBeShown=LinkedListOfArrays(filteredMails);
-                    //then set it
+                    try {
+                        mailsToBeShown=folder.mails(filteredMails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
+                    }
                 }
             }
             else{
@@ -442,21 +466,29 @@ public class app implements IApp{
                     }
                 }
                 else {
-                    //maisToBeShown=LinkedListOfArrays(mails);
-                    //then set it
+                    try {
+                        mailsToBeShown=folder.mails(mails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
+                    }
                 }
             }
         }
         else {
-            //maisToBeShown=LinkedListOfArrays(mailsToBeShown);
-            //then set it
+            try {
+                mailsToBeShown=folder.mails(mailsToBeShown);
+            } catch (Exception e) {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
+            }
         }
         //here i have the mails to be shown to the user in form Linked List Of Arrays of IMails
         //and it is set
     }
     @Override
     public IMail[] listEmails(int page) {
-        return new IMail[0];
+        return (IMail[])mailsToBeShown.get(page-1);
     }
 
     @Override
