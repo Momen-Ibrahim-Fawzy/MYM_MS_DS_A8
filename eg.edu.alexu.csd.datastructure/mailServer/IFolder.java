@@ -1,86 +1,136 @@
 package eg.edu.alexu.csd.datastructure.mailServer;
 
+import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
+
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 public interface IFolder {
     /**
-     *
-     * @param username
+     * check if the user name is stored or not
+     * @param username the user name which wanted to be checked
+     * @return false if the user name is not stored or true if it stored
+     */
+    public boolean checkExistUsername(String username);
+    /**
+     * check if two strings are equal or not
+     * @param s1 the first string
+     * @param s2 the second string
      * @return
      */
-    boolean check_exist_username(String username);
-
+    public boolean checkEqualityOfTwoStrings(String s1, String s2);
     /**
-     *
-     * @param userName
-     * @param password
-     * @return
+     * check if the user name is stored and then compare its password with the taken one
+     * @param userName the name of the user
+     * @param password the password which wanted to be checked of that user name
+     * @return true if the user name is stored and the password is true or return false in any other case
      */
-     boolean check_password(String userName ,String password);
-
+    public boolean checkPassword(String userName , String password);
     /**
-     *
+     * creat a folder for user
+     * @param contact which contain the user nameof that user
+     */
+    public void creatUsersFolder(contact contact);
+    /**
+     * after login we need to create a folders to the new account.
      * @param contact
      */
-     void creat_users_folder(contact contact);
-
+    public void createSubFolders(contact contact);
     /**
-     *
-     * @param source
-     * @param dest
-     * @throws IOException
+     * write Line In the File
+     * @param line the line wanted to written in the file
+     * @param name the file which wanted to be written in
      */
-     void copyFileUsingChannel(File source, File dest) throws IOException;
-
+    public void writeLineInFile(String line , File name );
     /**
-     *
-     * @param f1
-     * @param f2
-     * @throws IOException
+     * copy the file to the other file
+     * @param f the file which wanted to put copy of the file in it
      */
-     void move(String path1,String path2) throws IOException;
-
+    public void copyFiles(File f);
     /**
-     *
-     * @param line
-     * @param file
+     * make sure of the sub folders of the file  of the user
+     * @param username which wanted to check the folders in its folder
      */
-     void delete_line(String line,File file);
-
+    public void checkSubFolders(String username);
     /**
-     *
-     * @param line
+     * delete the Index Of the User
      */
-     void delete_folder(String line);
-
+    public void deleteIndexOfUser();
     /**
-     *
-     * @return
+     * copy File to other file Using Channel
+     * @param source the source file which wanted to copied
+     * @param dest the destination file which wanted to copy in
+     * @throws IOException if the file was null
      */
-     String getPath();
-
+    public  void copyFileUsingChannel(File source, File dest) throws IOException;
     /**
-     *
-     * @param path
+     * move File to other file Using Channel
+     * @param path1 the source file which wanted to be moved
+     * @param path2 the destination file which wanted to moove to
+     * @throws IOException if the file was null
      */
-     void setPath(String path);
-
+    public  void move(String path1,String path2) throws IOException;
     /**
-     *
-     * @return
+     * delete a specific line from a file
+     * @param line the line which wanted to be deleted
+     * @param file the file in which the line will be deleted
      */
-     String backStep();
-
+    public void deleteLine(String line, File file);
     /**
-     *
-      * @param file
-     * @return
+     * copy file to other one
+     * @param name1 the source file
+     * @param name2 the destination file
      */
+    public void copyFiles(String name1 , String name2);
+    /**
+     * sent the path of the folder then it will delete
+     * @param filePath the path of the folder to be deleted
+     */
+    public void deleteFolder(String filePath);
+    /**
+     * check If the file is Empty
+     * @param f the file which wanted to check if it i empty or not
+     * @return true if the file is empty or false if it is not empty
+     */
+    public boolean checkIfIsEmpty(File f);
+    /**
+     * return the path of that folder
+     * @return the path of that folder
+     */
+    public String getPath();
+    /**
+     * set the path of that folder
+     * @param path the new path
+     */
+    public void setPath(String path);
+    /**
+     * get the name of the folder which contain that folder
+     * @return the name of the folder which contain that folder
+     */
+    public String backStep();
+    /**
+     * get the name of the folder which contain parameter folder
+     * @param file the parameter folder which we want to know the name of the folder which contain it
+     * @return the name of the folder which contain that folder
+     */
+    public String back(File file);
+    /**
+     * get the mails in that folder in double linked list form
+     * @return the mails in that folder in double linked list form of folders
+     */
+    public doubleLinkedList getMailsFolders ();
+    /**
+     * convert the double linked of folders of emails
+     * to a double linked list of arrays(of size 10) of IMails
+     * @param emails the double linked list which wanted to be converted
+     * @return double linked list of arrays(of size 10) of IMails
+     * @throws IOException if the file was null
+     * @throws ParseException if the parse was null
+     */
+    public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException;
 
-     String back(File file);
-
-    }
+}
 
 
 
