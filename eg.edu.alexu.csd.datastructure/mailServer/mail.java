@@ -8,7 +8,7 @@ import java.io.*;
 import java.nio.channels.FileChannel;
 import java.util.Date;
 
-public class mail {
+public class mail implements IMail{
     private Date date;
     private String sender;
     private IQueue receiver;
@@ -26,27 +26,33 @@ public class mail {
         textBody=null;
         subject=null;
     }
+
     public void setDate(Date date)
     {
         this.date=date;
     }
+
     public void setSender(String sender){
         folder folder= new folder();
-        if(!folder.check_exist_username(sender)){
+        if(!folder.checkExistUsername(sender)){
             throw new RuntimeException("email is not found");
         }
         this.sender=sender;
     }
+
     public void setReceiver(String receiver){
         folder folder= new folder();
-        if(!folder.check_exist_username(receiver)){
+        if(!folder.checkExistUsername(receiver)){
             throw new RuntimeException("email is not found");
         }
         this.receiver.enqueue(receiver);
     }
+
     public void setAttachment(File file){
+
         attachment.add(file);
     }
+
     public void setTextBody(String text){
         textBody=text;
     }
