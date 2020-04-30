@@ -54,7 +54,7 @@ public class folder implements IFolder {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void SignIn(String userName ,String password) {
+   /* public void SignIn(String userName ,String password) {
         if(check_exist_username(userName)) {
             while(true) {
                 if(check_password(userName ,password)) {
@@ -87,7 +87,7 @@ public class folder implements IFolder {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public boolean check_exist_username(String username) {
+    public boolean checkExistUsername(String username) {
         if(username==null)
             return false;
         for(File f:system.listFiles()) {
@@ -97,25 +97,25 @@ public class folder implements IFolder {
         return false;
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean check_string(String check,String check1) {
-        if(check==null||check1==null) {
+    public boolean checkEqualityOfTwoStrings(String s1,String s2) {
+        if(s1==null||s2==null) {
             return false;
         }
         int i=0;
-        while(i<check.length()){
-            if(check.charAt(i)!=check1.charAt(i))
+        while(i<s1.length()){
+            if(s1.charAt(i)!=s2.charAt(i))
                 return false;
             else
                 i++;
         }
-        if(i==check.length()&&i==check1.length())
+        if(i==s1.length()&&i==s2.length())
             return true;
         else
             return false;
 
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public boolean check_password(String userName ,String password) {
+    public boolean checkPassword(String userName ,String password) {
         try {
             FileReader fr = new FileReader(index);
             @SuppressWarnings("resource")
@@ -123,9 +123,9 @@ public class folder implements IFolder {
             String line;
             while((line=in.readLine())!=null) {
                 //System.out.println(line);
-                if(check_string(line,userName)) {
+                if(checkEqualityOfTwoStrings(line,userName)) {
                     line=in.readLine();
-                    if(check_string(line,password)) {
+                    if(checkEqualityOfTwoStrings(line,password)) {
                         System.out.println("email is found and correct password");
                         return true;
                     }
@@ -144,15 +144,15 @@ public class folder implements IFolder {
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void creat_users_folder(contact contact) {
-        boolean check=check_exist_username(contact.getFirstEmail());
+    public void creatUsersFolder(contact contact) {
+        boolean check=checkExistUsername(contact.getFirstEmail());
         System.out.println(check);
         if(check)
             System.out.println("folder is exist");
         else {
             File user=new File("System/"+contact.getFirstEmail());
             user.mkdir();
-            create_sub_folders(contact);
+            createSubFolders(contact);
             System.out.println("folder is create");
             try {
                 BufferedWriter write=new BufferedWriter(new FileWriter(index,true));
@@ -173,7 +173,7 @@ public class folder implements IFolder {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////after login we need to create a folders to the new account.
-    public void create_sub_folders(contact contact) {
+    public void createSubFolders(contact contact) {
         File user=new File("System/"+contact.getFirstEmail()+"/Contact");
         File user1=new File("System/"+contact.getFirstEmail()+"/Draft");
         File user2=new File("System/"+contact.getFirstEmail()+"/Inbox");
@@ -216,11 +216,21 @@ public class folder implements IFolder {
         }
     }
 
+    @Override
+    public void writeLineInFile(String line, File name) {
+
+    }
+
+    @Override
+    public void copyFiles(File f) {
+
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void CheckExistOfIndexOfUsers() {
-        boolean check=check_exist_username("indexOfUser");
+        boolean check=checkExistUsername("indexOfUser");
         //System.out.println(check);
         if(!check) {
             returnInboxUser();
@@ -284,7 +294,7 @@ public class folder implements IFolder {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void check_sub_folders(String username) {
+    public void checkSubFolders(String username) {
         check_Contact(username);
         check_draft(username);
         check_Sent(username);
@@ -358,7 +368,7 @@ public class folder implements IFolder {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void delet_indexOfUser() {
+    public void deleteIndexOfUser() {
         index.delete();
     }
 
@@ -396,7 +406,7 @@ public class folder implements IFolder {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public void delete_line(String line,File file) {
+    public void deleteLine(String line,File file) {
         File new_file=new File(back(file)+"/return.txt");
         try {
             new_file.createNewFile();
@@ -411,7 +421,7 @@ public class folder implements IFolder {
             BufferedReader in=new BufferedReader(fr);
             String line1;
             while(!((line1=in.readLine())==null)) {
-                if(!check_string(line,line1)) {
+                if(!checkEqualityOfTwoStrings(line,line1)) {
                     writer_method(line1,new_file);
                 }
             }
@@ -424,7 +434,7 @@ public class folder implements IFolder {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void copy_files(String name1 , String name2) {
+    public void copyFiles(String name1 , String name2) {
         File f1=new File(name1);
         File f2=new File(name2);
         if(!f2.exists()) {
@@ -455,17 +465,17 @@ public class folder implements IFolder {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////sent the path of the folder then it will delete
-    public void delete_folder(String line) {
+    public void deleteFolder(String line) {
         File f1=new File(line);
-        if(!check_ifisempty(f1)) {
+        if(!checkIfIsEmpty(f1)) {
             for(File f:f1.listFiles()) {
-                delete_folder(line+"/"+f.getName());
+                deleteFolder(line+"/"+f.getName());
             }
         }
         f1.delete();
     }
 
-    public boolean check_ifisempty(File f) {
+    public boolean checkIfIsEmpty(File f) {
         if(f.isDirectory()&&f.list().length>0) {
             return false;
         }
