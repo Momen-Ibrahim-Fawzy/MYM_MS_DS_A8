@@ -129,6 +129,12 @@ public interface IFolder {
      * @throws ParseException if the parse was null
      */
     public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException;
+    /**
+     * get the mails in that folder in double linked list form for Trash
+     * @return the mails in that folder in double linked list form of folders
+     * @throws IOException if the file was null
+     */
+    public doubleLinkedList getMailsFoldersForTrash () throws IOException;
 
 }
 
