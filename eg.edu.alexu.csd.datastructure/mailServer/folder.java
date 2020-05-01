@@ -577,6 +577,87 @@ public class folder implements IFolder {
 
     }
 
+    private boolean leapYear(int year){
+        if(year%400==0)
+        {
+            return true;
+        }
+        else if(year%100!=0 && year%4==0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public doubleLinkedList getMailsFoldersForTrash () throws IOException {
+        File f =new File(getPath());
+        File[] files = f.listFiles();
+        for(int i=0;i<files.length;i++) {
+           if(files[i].isDirectory()) {
+               String date1 = Files.readAllLines(Paths.get((files[i]).getPath() + "/index.txt")).get(0);
+               String[] arr = date1.split(" ", 6);
+               Date d1 = new Date();
+               String date2 = d1.toString();
+               String[] arr2 = date2.split(" ", 6);
+               if (leapYear(Integer.parseInt(arr[5]))) {
+                   if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
+                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) == 0) {
+                           deleteFolder(files[i].getPath());
+                       }
+                   }
+                   else if(arr[1] == "Feb"){
+                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])+1) == 0) {
+                           deleteFolder(files[i].getPath());
+                       }
+                   }
+                   else {
+                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) == 0) {
+                           deleteFolder(files[i].getPath());
+                       }
+                   }
+               }
+               else{
+                   if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
+                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) == 0) {
+                           deleteFolder(files[i].getPath());
+                       }
+                   }
+                   else if(arr[1] == "Feb"){
+                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])+2) == 0) {
+                           deleteFolder(files[i].getPath());
+                       }
+                   }
+                   else {
+                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) == 0) {
+                           deleteFolder(files[i].getPath());
+                       }
+                   }
+
+               }
+           }
+        }
+
+
+
+        doubleLinkedList mails = new doubleLinkedList();
+
+        for (int i=0 ; i<files.length;i++){
+
+            if (files[i].isDirectory()){
+
+                mails.add(files[i]);
+
+            }
+
+        }
+
+        return mails;
+
+    }
+
 
     public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException {
         doubleLinkedList list=new doubleLinkedList();
