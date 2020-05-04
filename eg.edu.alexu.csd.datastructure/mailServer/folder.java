@@ -577,6 +577,47 @@ public class folder implements IFolder {
 
     }
 
+   private int monthToNum(String month){
+        int num = 0;
+        if(month.equals("Jan")){
+            num=1;
+        }
+        else if(month.equals("Feb")){
+            num=2;
+        }
+        else if(month.equals("Mar")){
+            num=3;
+        }
+        else if(month.equals("Apr")){
+            num=4;
+        }
+        else if(month.equals("May")){
+            num=5;
+        }
+        else if(month.equals("Jun")){
+            num=6;
+        }
+        else if(month.equals("Jul")){
+            num=7;
+        }
+        else if(month.equals("Aug")){
+            num=8;
+        }
+        else if(month.equals("Sept")){
+            num=9;
+        }
+        else if(month.equals("Oct")){
+            num=10;
+        }
+        else if(month.equals("Nov")){
+            num=11;
+        }
+        else if(month.equals("Dec")){
+            num=12;
+        }
+        return num;
+    }
+
     private boolean leapYear(int year){
         if(year%400==0)
         {
@@ -602,63 +643,90 @@ public class folder implements IFolder {
                Date d1 = new Date();
                String date2 = d1.toString();
                String[] arr2 = date2.split(" ", 6);
-               if (leapYear(Integer.parseInt(arr[5]))) {
-                   if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
-                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) == 0) {
-                           deleteFolder(files[i].getPath());
-                       }
-                   }
-                   else if(arr[1] == "Feb"){
-                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])+1) == 0) {
-                           deleteFolder(files[i].getPath());
-                       }
-                   }
-                   else {
-                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) == 0) {
-                           deleteFolder(files[i].getPath());
+               if((Integer.parseInt(arr2[5])-Integer.parseInt(arr[5]))==0) {
+                   if ((monthToNum(arr2[1]) - monthToNum(arr[1])) > 0) {
+                       if (leapYear(Integer.parseInt(arr[5]))) {
+                           if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
+                               if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) <= 0) {
+                                   deleteFolder(files[i].getPath());
+                               }
+                           } else if (arr[1] == "Feb") {
+                               if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) + 1) <= 0) {
+                                   deleteFolder(files[i].getPath());
+                               }
+                           } else {
+                               if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) <= 0) {
+                                   deleteFolder(files[i].getPath());
+                               }
+                           }
+                       } else {
+                           if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
+                               if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) <= 0) {
+                                   deleteFolder(files[i].getPath());
+                               }
+                           } else if (arr[1] == "Feb") {
+                               if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) + 2) <= 0) {
+                                   deleteFolder(files[i].getPath());
+                               }
+                           } else {
+                               if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) <= 0) {
+                                   deleteFolder(files[i].getPath());
+                               }
+                           }
+
                        }
                    }
                }
-               else{
-                   if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
-                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) == 0) {
-                           deleteFolder(files[i].getPath());
+               else if((Integer.parseInt(arr2[5])-Integer.parseInt(arr[5]))>0){
+                   if (leapYear(Integer.parseInt(arr[5]))) {
+                       if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
+                           if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) <= 0) {
+                               deleteFolder(files[i].getPath());
+                           }
+                       } else if (arr[1] == "Feb") {
+                           if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) + 1) <= 0) {
+                               deleteFolder(files[i].getPath());
+                           }
+                       } else {
+                           if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) <= 0) {
+                               deleteFolder(files[i].getPath());
+                           }
                        }
-                   }
-                   else if(arr[1] == "Feb"){
-                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])+2) == 0) {
-                           deleteFolder(files[i].getPath());
+                   } else {
+                       if (arr[1] == "Jan" || arr[1] == "Mar" || arr[1] == "May" || arr[1] == "Jul" || arr[1] == "Aug" || arr[1] == "Oct" || arr[1] == "Dec") {
+                           if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) - 1) <= 0) {
+                               deleteFolder(files[i].getPath());
+                           }
+                       } else if (arr[1] == "Feb") {
+                           if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2]) + 2) <= 0) {
+                               deleteFolder(files[i].getPath());
+                           }
+                       } else {
+                           if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) <= 0) {
+                               deleteFolder(files[i].getPath());
+                           }
                        }
-                   }
-                   else {
-                       if ((Integer.parseInt(arr[2]) - Integer.parseInt(arr2[2])) == 0) {
-                           deleteFolder(files[i].getPath());
-                       }
-                   }
 
+                   }
                }
            }
         }
 
 
-
+        File[] files1 = f.listFiles();
         doubleLinkedList mails = new doubleLinkedList();
 
-        for (int i=0 ; i<files.length;i++){
+        for (int i=0 ; i<files1.length;i++){
 
-            if (files[i].isDirectory()){
-
-                mails.add(files[i]);
+            if (files1[i].isDirectory()){
+                System.out.println(files1[i]);
+                mails.add(files1[i]);
 
             }
 
         }
-
         return mails;
-
     }
-
-
     public doubleLinkedList mails(doubleLinkedList emails) throws IOException, ParseException {
         doubleLinkedList list=new doubleLinkedList();
         int num=0;
