@@ -51,7 +51,11 @@ public class app implements IApp {
         if(folder!=null){
             folder fold = (folder)folder;
             if (new File(folder.getPath()).getName().equals("Trash")){
-                doubleLinkedList mails =fold.getMailsFoldersForTrash();
+                try {
+                    doubleLinkedList mails =fold.getMailsFoldersForTrash();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             else {
                 doubleLinkedList mails = fold.getMailsFolders();
