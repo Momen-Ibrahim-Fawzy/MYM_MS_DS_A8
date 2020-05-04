@@ -91,7 +91,7 @@ public class mail implements IMail{
     }
 
 
-    public void draft() throws IOException {
+      public void draft() throws IOException {
         File file10=new File("System/num.txt");
         FileReader x = new FileReader(file10);
         BufferedReader in=new BufferedReader(x);
@@ -144,6 +144,8 @@ public class mail implements IMail{
         fw.write(getSender());
         fw.write("\r\n");
         fw.write(Integer.toString(getPriority()));
+        fw.write("\r\n");
+        fw.write(line);
         fw.write("\r\n");
         fw.flush();
         fw.close();
@@ -220,6 +222,8 @@ public class mail implements IMail{
         fw.write("\r\n");
         fw.write(Integer.toString(getPriority()));
         fw.write("\r\n");
+        fw.write(line);
+        fw.write("\r\n");
         fw.flush();
         fw.close();
 
@@ -260,6 +264,8 @@ public class mail implements IMail{
             writer1.newLine();
             writer1.write(temp);
             writer1.newLine();
+            writer.write(line);
+            writer.newLine();
             writer1.close();
             writer.write(temp);
             if(!receiver.isEmpty())
