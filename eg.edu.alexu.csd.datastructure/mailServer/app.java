@@ -65,6 +65,9 @@ public class app implements IApp {
                 filt.setMails(mails);
                 doubleLinkedList filteredMails=new doubleLinkedList();
                 switch (filt.getType()) {
+                    case "":
+                        filteredMails=mails;
+                        break;
                     case "filterByDate":
                         try {
                             filteredMails = filt.filterByDate(filt.getDate());
