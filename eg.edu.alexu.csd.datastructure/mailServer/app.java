@@ -46,12 +46,16 @@ public class app implements IApp {
         return true;
     }
 
-    @Override
+     @Override
     public void setViewingOptions(IFolder folder, IFilter filter, ISort sort) {
-        doubleLinkedList mailsToBeShown=new doubleLinkedList();
         if(folder!=null){
             folder fold = (folder)folder;
-            doubleLinkedList mails = (fold).getMailsFolders();
+            if (new File(folder.getPath()).getName().equals("Trash")){
+                doubleLinkedList mails =fold.getMailsFoldersForTrash();
+            }
+            else {
+                doubleLinkedList mails = fold.getMailsFolders();
+            }
             if (filter!=null){
                 filter filt = (filter) filter;
                 filt.setMails(mails);
@@ -280,12 +284,20 @@ public class app implements IApp {
                             }
                             break;
                     }
-                    //maisToBeShown=LinkedListOfArrays(sortedMails);
-                    //then set it
+                    try {
+                        mailsToBeShown=folder.mails(sortedMails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
+                    }
                 }
                 else {
-                    //maisToBeShown=LinkedListOfArrays(filteredMails);
-                    //then set it
+                    try {
+                        mailsToBeShown=folder.mails(filteredMails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
+                    }
                 }
             }
             else{
@@ -441,22 +453,32 @@ public class app implements IApp {
                     }
                 }
                 else {
-                    //maisToBeShown=LinkedListOfArrays(mails);
-                    //then set it
+                    try {
+                        mailsToBeShown=folder.mails(mails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
+                    }
                 }
             }
         }
         else {
-            //maisToBeShown=LinkedListOfArrays(mailsToBeShown);
-            //then set it
+            //there is no folder to be shown its e_mauls
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
         //here i have the mails to be shown to the user in form Linked List Of Arrays of IMails
         //and it is set
     }
-
     @Override
     public IMail[] listEmails(int page) {
-        return new IMail[0];
+        if (page>0&mailsToBeShown!=null) {
+            return (IMail[]) mailsToBeShown.get(page - 1);
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
 
    @Override
