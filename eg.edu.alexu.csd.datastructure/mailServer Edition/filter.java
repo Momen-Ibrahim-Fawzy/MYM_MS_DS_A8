@@ -458,7 +458,7 @@ public class filter implements IFilter{
      * @return the number of lines in the Receivers file in that folder
      */
     private int numOfLinesInReceivers(File f) throws IOException {
-        Scanner sc = new Scanner(new File(f + "\\Receivers.txt"));
+        //Scanner sc = new Scanner(new File(f + "\\Receivers.txt"));
         if (f!=null) {
             FileReader fr = new FileReader(new File(f + "\\Receivers.txt"));
             BufferedReader br = new BufferedReader(fr);
@@ -534,7 +534,54 @@ public class filter implements IFilter{
             throw Runtime;
         }
     }
-
+    /**
+     * check if the mail has ths receiver with the name receiver
+     * @param f the file of the email
+     * @param receiver the name of receiver i search with
+     * @return true  if the file has receiver with that name
+     * @throws IOException
+     */
+    private boolean ifReceiverInFile(File f,String receiver) throws IOException {
+        //Scanner sc = new Scanner(new File(f + "\\Receivers.txt"));
+        if (f!=null&receiver!=null) {
+            FileReader fr = new FileReader(new File(f + "\\Receivers.txt"));
+            BufferedReader br = new BufferedReader(fr);
+            int numOfLines = 0;
+            String line1;
+            while (!((line1 = br.readLine()) == null)) {
+                if (line1.toLowerCase().equals(receiver.toLowerCase())){
+                    return true;
+                }
+                numOfLines++;
+            }
+            return false;
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
+    }
+    /**
+     * @param x is the Receiver that we want to filter with
+     * @return Returns double Linked List Of the E_Mails with that seme Receiver x
+     */
+    @Override
+    public doubleLinkedList filterByReceivers(String x) throws IOException, ParseException {
+        if (x!=null) {
+            doubleLinkedList filtered = new doubleLinkedList();
+            int i=0;
+            for (i=9;i<e.size();i++) {
+                if (ifReceiverInFile((File) e.get(i), x)) {
+                    filtered.add(e.get(i));
+                }
+            }
+            return filtered;
+        }
+        else {
+            RuntimeException Runtime = new RuntimeException();
+            throw Runtime;
+        }
+    }
     /**
      * it returns the number of the lines in the Attachments file of the mail
      * @param f is a file that we want to calculate its number of lines(Attachments)
