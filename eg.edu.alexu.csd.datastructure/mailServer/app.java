@@ -504,7 +504,11 @@ public class app implements IApp {
     }
 
     @Override
-    public boolean compose(IMail email) {
-        return false;
+    public boolean compose(IMail email)
+    {
+        if(!email.checkMail())
+            return false;
+        return true;
+
     }
 }
