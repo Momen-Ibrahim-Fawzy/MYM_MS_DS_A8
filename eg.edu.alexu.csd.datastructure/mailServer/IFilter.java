@@ -117,10 +117,16 @@ public interface IFilter {
      */
     public int getNumOfLettersInBody();
     /**
-     * @param x is the Date that we to filter with
+     * @param x is the Date(complete) that we to filter with
      * @return Returns double Linked List Of the E_Mails with that Date
      */
-    public doubleLinkedList filterByDate(Date x) throws IOException, ParseException;
+    public doubleLinkedList filterByCompleteDate(Date x) throws IOException, ParseException;
+    /**
+     * @param x is the Date(Day) that we to filter with
+     * @return Returns double Linked List Of the E_Mails with that Date
+     */
+    public doubleLinkedList filterByDayOfDate(Date x) throws IOException, ParseException;
+    
     /**
      * @param x is the Subject that we to filter with
      * @return Returns double Linked List Of the E_Mails with that Subject
@@ -141,6 +147,11 @@ public interface IFilter {
      * @return Returns double Linked List Of the E_Mails with that Num Of Receivers
      */
     public doubleLinkedList filterByNumOfReceivers(int x) throws IOException, ParseException;
+    /**
+     * @param x is the Receiver that we want to filter with
+     * @return Returns double Linked List Of the E_Mails with that seme Receiver x
+     */
+    public doubleLinkedList filterByReceivers(String x) throws IOException, ParseException;
     /**
      * @param x is the Num Of Attachments that we want to filter with
      * @return Returns double Linked List Of the E_Mails with that Num Of Attachments
