@@ -540,4 +540,74 @@ public class app implements IApp{
     public boolean compose(IMail email) {
         return false;
     }
+    ///////////////////////////////////////////////////////////////////////////////////////
+    public static void main(String[] args) throws IOException, ParseException {
+        app momen = new app();
+        folder fold = new folder();
+        fold.setPath("System\\Ahmed\\index");
+        sort s=new sort();
+        s.setType("sortByDateNewestToOldest");
+        filter f=new filter();
+        f.setType("filterByPriority");
+        f.setPriority(2);
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+        System.out.println("///////////////////////////////");
+        f.setType("filterBySender");
+        f.setSender("mohammed Ahmed");
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+        System.out.println("///////////////////////////////");
+        f.setType("filterBySubject");
+        f.setSubject("yougert");
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+        System.out.println("///////////////////////////////");
+        f.setType("");
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+        System.out.println("///////////////////////////////");
+        f.setType("");
+        s.setType("sortAscendingBySubject");
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+        System.out.println("///////////////////////////////");
+        f.setType("filterByDate");
+        f.setDate(new SimpleDateFormat("dd/MM/yyy").parse("9/7/2017"));
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+        System.out.println("///////////////////////////////");
+        f.setType("filterByDate");
+        f.setDate(new SimpleDateFormat("dd/MM/yyy").parse("12/7/2017"));
+        momen.setViewingOptions(fold,f,s);
+        for (int i=0;i<10;i++){
+            if(((IMail[])momen.getMailsToBeShown().get(0))[i]!=null){
+                System.out.println(((IMail[])momen.getMailsToBeShown().get(0))[i].getSender());
+            }
+        }
+    }
 }
