@@ -44,7 +44,16 @@ public class filter implements IFilter{
      */
     @Override
     public void setMails(doubleLinkedList mails){
-        e= (doubleLinkedList) mails.sublist(0,mails.size()-1);
+        if(mails!=null&&!mails.isEmpty()) {
+            e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+        }
+        else if(mails.isEmpty()){
+            e=new doubleLinkedList();
+        }
+        else{
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
     /**
      * @return the double linked list of the e_mails which we want it to be sorted
