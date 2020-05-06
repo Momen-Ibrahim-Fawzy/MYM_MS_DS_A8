@@ -67,15 +67,28 @@ public class app implements IApp{
     public void setViewingOptions(IFolder folder, IFilter filter, ISort sort) {
         if(folder!=null){
             folder fold = (folder)folder;
-            doubleLinkedList mails = (fold).getMailsFolders();
+            doubleLinkedList mails=new doubleLinkedList();
+            if (new File(folder.getPath()).getName().equals("Trash")){
+                try {
+                    mails =fold.getMailsFoldersForTrash();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                mails = fold.getMailsFolders();
+            }
             if (filter!=null){
                 filter filt = (filter) filter;
                 filt.setMails(mails);
                 doubleLinkedList filteredMails=new doubleLinkedList();
                 switch (filt.getType()) {
+                    case "":
+                        filteredMails=mails;
+                        break;
                     case "filterByDate":
                         try {
-                            filteredMails = filt.filterByDate(filt.getDate());
+                            filteredMails = filt.filterByCompleteDate(filt.getDate());
                         } catch (Exception e) {
                             RuntimeException Runtime = new RuntimeException();
                             throw Runtime;
@@ -151,6 +164,9 @@ public class app implements IApp{
                     s.setMails(filteredMails);
                     doubleLinkedList sortedMails = new doubleLinkedList();
                     switch (s.getType()){
+                        case "" :
+                            sortedMails=filteredMails;
+                            break;
                         case"sortByDateOldestToNewest":
                             try {
                                 sortedMails=s.sortByDateOldestToNewest();
@@ -462,6 +478,15 @@ public class app implements IApp{
                                 throw Runtime;
                             }
                             break;
+                        case "" :
+                            sortedMails=mails;
+                            break;
+                    }
+                    try {
+                        mailsToBeShown=folder.mails(sortedMails);
+                    } catch (Exception e) {
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
                     }
                 }
                 else {
@@ -475,12 +500,9 @@ public class app implements IApp{
             }
         }
         else {
-            try {
-                mailsToBeShown=folder.mails(mailsToBeShown);
-            } catch (Exception e) {
-                RuntimeException Runtime = new RuntimeException();
-                throw Runtime;
-            }
+            //there is no folder to be shown its e_mauls
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
         }
         //here i have the mails to be shown to the user in form Linked List Of Arrays of IMails
         //and it is set
