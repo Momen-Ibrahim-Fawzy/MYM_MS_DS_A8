@@ -52,6 +52,7 @@ public class sort implements ISort{
             throw NullPointer;
         }
     }
+
     /**
      * @return the double linked list of the e_mails which we want it to be sorted
      */
@@ -110,7 +111,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -186,7 +191,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -263,7 +272,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -340,7 +353,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -436,7 +453,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -533,11 +554,16 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
         }
+        
         else {
             NullPointerException NullPointer = new NullPointerException();
             throw NullPointer;
@@ -632,7 +658,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -728,7 +758,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
@@ -830,7 +864,11 @@ public class sort implements ISort{
                     s.push(p);
                 }
                 return mails;
-            } else {
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
                 RuntimeException Runtime = new RuntimeException();
                 throw Runtime;
             }
