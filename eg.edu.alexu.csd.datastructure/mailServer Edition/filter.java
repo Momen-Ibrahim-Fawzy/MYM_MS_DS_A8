@@ -222,40 +222,49 @@ public class filter implements IFilter{
      */
     private int binarySearchByCompleteDate(Date x) throws ParseException, IOException{
         if (x!=null) {
-            Date d=new Date();
-            d.setTime(x.getTime());
-            doubleLinkedList mails = new doubleLinkedList();
-            sort sorting = new sort();
-            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortByDateOldestToNewest();
-            Stack s = new Stack();
-            s.push(0);
-            s.push(e.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (start < end) {
-                    int mid = start + (end - start) / 2;
-                    String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(0);
-                    Date inMid = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
-                    inMid.setMinutes(0);
-                    inMid.setHours(0);
-                    inMid.setSeconds(0);
-                    d.setMinutes(0);
-                    d.setHours(0);
-                    d.setSeconds(0);
-                    if (d.compareTo(inMid) < 0) {
-                        s.push(start);
-                        s.push(mid);
-                    } else if (d.compareTo(inMid) > 0) {
-                        s.push(mid + 1);
-                        s.push(end);
-                    } else {
-                        return mid;
+            if (e!=null&&e.size() > 0) {
+                Date d = new Date();
+                d.setTime(x.getTime());
+                doubleLinkedList mails = new doubleLinkedList();
+                sort sorting = new sort();
+                sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+                mails = sorting.sortByDateOldestToNewest();
+                Stack s = new Stack();
+                s.push(0);
+                s.push(e.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (start < end) {
+                        int mid = start + (end - start) / 2;
+                        String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(0);
+                        Date inMid = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+                        inMid.setMinutes(0);
+                        inMid.setHours(0);
+                        inMid.setSeconds(0);
+                        d.setMinutes(0);
+                        d.setHours(0);
+                        d.setSeconds(0);
+                        if (d.compareTo(inMid) < 0) {
+                            s.push(start);
+                            s.push(mid);
+                        } else if (d.compareTo(inMid) > 0) {
+                            s.push(mid + 1);
+                            s.push(end);
+                        } else {
+                            return mid;
+                        }
                     }
                 }
+                return -1;
             }
-            return -1;
+            else if(e.isEmpty()){
+                return (-1);
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -269,22 +278,31 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByCompleteDate(Date x) throws IOException, ParseException {
         if (x!=null) {
-            doubleLinkedList mails = new doubleLinkedList();
-            doubleLinkedList past = new doubleLinkedList();
-            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
-            sort sorting = new sort();
-            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortByDateOldestToNewest();
-            doubleLinkedList filtered = new doubleLinkedList();
-            int i = binarySearchByCompleteDate(x);
-            while (i > -1) {
-                filtered.add(mails.get(i));
-                mails.remove(i);
-                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
-                i = binarySearchByCompleteDate(x);
+            if (e!=null&&e.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                doubleLinkedList past = new doubleLinkedList();
+                past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+                sort sorting = new sort();
+                sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+                mails = sorting.sortByDateOldestToNewest();
+                doubleLinkedList filtered = new doubleLinkedList();
+                int i = binarySearchByCompleteDate(x);
+                while (i > -1) {
+                    filtered.add(mails.get(i));
+                    mails.remove(i);
+                    e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                    i = binarySearchByCompleteDate(x);
+                }
+                e = past;
+                return filtered;
             }
-            e = past;
-            return filtered;
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -298,44 +316,53 @@ public class filter implements IFilter{
      */
     private int binarySearchByDayOfDate(Date x) throws ParseException, IOException{
         if (x!=null) {
-            Date d=new Date();
-            d.setTime(x.getTime());
-            doubleLinkedList mails = new doubleLinkedList();
-            sort sorting = new sort();
-            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortByDateOldestToNewest();
-            Stack s = new Stack();
-            s.push(0);
-            s.push(e.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (start < end) {
-                    int mid = start + (end - start) / 2;
-                    String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(0);
-                    Date inMid = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
-                    inMid.setMinutes(0);
-                    inMid.setHours(0);
-                    inMid.setSeconds(0);
-                    inMid.setMonth(0);
-                    inMid.setYear(0);
-                    d.setMinutes(0);
-                    d.setHours(0);
-                    d.setSeconds(0);
-                    d.setMonth(0);
-                    d.setYear(0);
-                    if (d.compareTo(inMid) < 0) {
-                        s.push(start);
-                        s.push(mid);
-                    } else if (d.compareTo(inMid) > 0) {
-                        s.push(mid + 1);
-                        s.push(end);
-                    } else {
-                        return mid;
+            if (e!=null&&e.size() > 0) {
+                Date d = new Date();
+                d.setTime(x.getTime());
+                doubleLinkedList mails = new doubleLinkedList();
+                sort sorting = new sort();
+                sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+                mails = sorting.sortByDateOldestToNewest();
+                Stack s = new Stack();
+                s.push(0);
+                s.push(e.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (start < end) {
+                        int mid = start + (end - start) / 2;
+                        String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(0);
+                        Date inMid = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+                        inMid.setMinutes(0);
+                        inMid.setHours(0);
+                        inMid.setSeconds(0);
+                        inMid.setMonth(0);
+                        inMid.setYear(0);
+                        d.setMinutes(0);
+                        d.setHours(0);
+                        d.setSeconds(0);
+                        d.setMonth(0);
+                        d.setYear(0);
+                        if (d.compareTo(inMid) < 0) {
+                            s.push(start);
+                            s.push(mid);
+                        } else if (d.compareTo(inMid) > 0) {
+                            s.push(mid + 1);
+                            s.push(end);
+                        } else {
+                            return mid;
+                        }
                     }
                 }
+                return -1;
             }
-            return -1;
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -349,22 +376,31 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByDayOfDate(Date x) throws IOException, ParseException {
         if (x!=null) {
-            doubleLinkedList mails = new doubleLinkedList();
-            doubleLinkedList past = new doubleLinkedList();
-            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
-            sort sorting = new sort();
-            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortByDateOldestToNewest();
-            doubleLinkedList filtered = new doubleLinkedList();
-            int i = binarySearchByDayOfDate(x);
-            while (i > -1) {
-                filtered.add(mails.get(i));
-                mails.remove(i);
-                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
-                i = binarySearchByDayOfDate(x);
+            if (e != null && e.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                doubleLinkedList past = new doubleLinkedList();
+                past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+                sort sorting = new sort();
+                sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+                mails = sorting.sortByDateOldestToNewest();
+                doubleLinkedList filtered = new doubleLinkedList();
+                int i = binarySearchByDayOfDate(x);
+                while (i > -1) {
+                    filtered.add(mails.get(i));
+                    mails.remove(i);
+                    e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                    i = binarySearchByDayOfDate(x);
+                }
+                e = past;
+                return filtered;
             }
-            e = past;
-            return filtered;
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -379,32 +415,41 @@ public class filter implements IFilter{
      */
     private int binarySearchBySubject(String x) throws ParseException, IOException{
         if (x!=null) {
-            doubleLinkedList mails = new doubleLinkedList();
-            sort sorting = new sort();
-            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortAscendingBySubject();
-            Stack s = new Stack();
-            s.push(0);
-            s.push(e.size());
-            while (!s.isEmpty()) {
-                int end = (int) s.pop();
-                int start = (int) s.pop();
-                if (start < end) {
-                    int mid = start + (end - start) / 2;
-                    String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(1);
-                    String inMid = line.toLowerCase();
-                    if (x.toLowerCase().compareTo(inMid) < 0) {
-                        s.push(start);
-                        s.push(mid);
-                    } else if (x.toLowerCase().compareTo(inMid) > 0) {
-                        s.push(mid + 1);
-                        s.push(end);
-                    } else {
-                        return mid;
+            if (e != null && e.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                sort sorting = new sort();
+                sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+                mails = sorting.sortAscendingBySubject();
+                Stack s = new Stack();
+                s.push(0);
+                s.push(e.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (start < end) {
+                        int mid = start + (end - start) / 2;
+                        String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(1);
+                        String inMid = line.toLowerCase();
+                        if (x.toLowerCase().compareTo(inMid) < 0) {
+                            s.push(start);
+                            s.push(mid);
+                        } else if (x.toLowerCase().compareTo(inMid) > 0) {
+                            s.push(mid + 1);
+                            s.push(end);
+                        } else {
+                            return mid;
+                        }
                     }
                 }
+                return -1;
             }
-            return -1;
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -418,6 +463,7 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterBySubject(String x) throws IOException, ParseException {
         if (x!=null) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -434,6 +480,14 @@ public class filter implements IFilter{
             }
             e=past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -447,6 +501,7 @@ public class filter implements IFilter{
      */
     private int binarySearchBySender(String x) throws ParseException, IOException{
         if (x!=null) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -473,6 +528,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -485,6 +548,7 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterBySender(String x) throws IOException, ParseException {
         if (x!=null) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -501,6 +565,14 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -514,6 +586,7 @@ public class filter implements IFilter{
      */
     private int binarySearchByPriority(int x) throws ParseException, IOException{
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -540,6 +613,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -552,6 +633,7 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterByPriority(int x) throws IOException, ParseException {
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -568,6 +650,14 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -603,6 +693,7 @@ public class filter implements IFilter{
      */
     private int binarySearchByNumOfReceivers(int x) throws ParseException, IOException{
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -628,6 +719,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -640,6 +739,7 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterByNumOfReceivers(int x) throws IOException, ParseException {
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -656,6 +756,14 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -696,14 +804,20 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByReceivers(String x) throws IOException, ParseException {
         if (x!=null) {
-            doubleLinkedList filtered = new doubleLinkedList();
-            int i=0;
-            for (i=9;i<e.size();i++) {
-                if (ifReceiverInFile((File) e.get(i), x)) {
-                    filtered.add(e.get(i));
+            if (e!=null) {
+                doubleLinkedList filtered = new doubleLinkedList();
+                int i = 0;
+                for (i = 9; i < e.size(); i++) {
+                    if (ifReceiverInFile((File) e.get(i), x)) {
+                        filtered.add(e.get(i));
+                    }
                 }
+                return filtered;
             }
-            return filtered;
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -745,6 +859,7 @@ public class filter implements IFilter{
      */
     private int binarySearchByNumOfAttachments(int x) throws ParseException, IOException{
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -770,6 +885,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -783,6 +906,7 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByNumOfAttachments(int x) throws IOException, ParseException {
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -799,6 +923,14 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -835,6 +967,7 @@ public class filter implements IFilter{
      */
     private int binarySearchByNumOfLinesInBody(int x) throws ParseException, IOException{
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -860,6 +993,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -872,6 +1013,7 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterByNumOfLinesInBody(int x) throws IOException, ParseException {
         if(x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -888,6 +1030,14 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -924,6 +1074,7 @@ public class filter implements IFilter{
      */
     private int binarySearchByNumOfWordsInBody(int x) throws ParseException, IOException{
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -949,6 +1100,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -962,6 +1121,7 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByNumOfWordsInBody(int x) throws IOException, ParseException {
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -978,6 +1138,14 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -1016,6 +1184,7 @@ public class filter implements IFilter{
      */
     private int binarySearchByNumOfLettersInBody(int x) throws ParseException, IOException{
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -1041,6 +1210,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
@@ -1054,6 +1231,7 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByNumOfLettersInBody(int x) throws IOException, ParseException {
         if (x>-1) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -1070,12 +1248,21 @@ public class filter implements IFilter{
             }
             e = past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             RuntimeException Runtime = new RuntimeException();
             throw Runtime;
         }
     }
+
     /**
      * @param x is the Contact that we search for
      * @return Returns index of x (Contact) if it is present in double Linked List ,
@@ -1083,6 +1270,7 @@ public class filter implements IFilter{
      */
     private int binarySearchInContactBySName(String x) throws ParseException, IOException{
         if (x!=null) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -1110,6 +1298,14 @@ public class filter implements IFilter{
                 }
             }
             return -1;
+            }
+            else if(e.isEmpty()){
+                return -1;
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
@@ -1122,6 +1318,7 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterContactByName(String x) throws IOException, ParseException {
         if (x!=null) {
+            if (e != null && e.size() > 0) {
             doubleLinkedList mails = new doubleLinkedList();
             doubleLinkedList past = new doubleLinkedList();
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
@@ -1138,6 +1335,14 @@ public class filter implements IFilter{
             }
             e=past;
             return filtered;
+            }
+            else if(e.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                NullPointerException NullPointer = new NullPointerException();
+                throw NullPointer;
+            }
         }
         else {
             NullPointerException NullPointer = new NullPointerException();
