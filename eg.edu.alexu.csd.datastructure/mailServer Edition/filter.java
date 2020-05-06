@@ -208,11 +208,13 @@ public class filter implements IFilter{
     }
     /**
      * @param x is the Date that we search for
-     * @return Returns index of x (Date) if it is present in double Linked List ,
+     * @return Returns index of x (complete Date) if it is present in double Linked List ,
      * else return -1
      */
-    private int binarySearchByDate(Date x) throws ParseException, IOException{
+    private int binarySearchByCompleteDate(Date x) throws ParseException, IOException{
         if (x!=null) {
+            Date d=new Date();
+            d.setTime(x.getTime());
             doubleLinkedList mails = new doubleLinkedList();
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
@@ -227,10 +229,16 @@ public class filter implements IFilter{
                     int mid = start + (end - start) / 2;
                     String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(0);
                     Date inMid = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
-                    if (x.compareTo(inMid) < 0) {
+                    inMid.setMinutes(0);
+                    inMid.setHours(0);
+                    inMid.setSeconds(0);
+                    d.setMinutes(0);
+                    d.setHours(0);
+                    d.setSeconds(0);
+                    if (d.compareTo(inMid) < 0) {
                         s.push(start);
                         s.push(mid);
-                    } else if (x.compareTo(inMid) > 0) {
+                    } else if (d.compareTo(inMid) > 0) {
                         s.push(mid + 1);
                         s.push(end);
                     } else {
@@ -250,15 +258,21 @@ public class filter implements IFilter{
      * @return Returns double Linked List Of the E_Mails with that Date
      */
     @Override
-    public doubleLinkedList filterByDate(Date x) throws IOException, ParseException {
+    public doubleLinkedList filterByCompleteDate(Date x) throws IOException, ParseException {
         if (x!=null) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortByDateOldestToNewest();
             doubleLinkedList filtered = new doubleLinkedList();
-            int i = binarySearchByDate(x);
+            int i = binarySearchByCompleteDate(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
-                i = binarySearchByDate(x);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
+                i = binarySearchByCompleteDate(x);
             }
             e = past;
             return filtered;
@@ -268,6 +282,87 @@ public class filter implements IFilter{
             throw NullPointer;
         }
     }
+    /**
+     * @param x is the Date that we search for
+     * @return Returns index of d (Date (Day)) if it is present in double Linked List ,
+     * else return -1
+     */
+    private int binarySearchByDayOfDate(Date x) throws ParseException, IOException{
+        if (x!=null) {
+            Date d=new Date();
+            d.setTime(x.getTime());
+            doubleLinkedList mails = new doubleLinkedList();
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortByDateOldestToNewest();
+            Stack s = new Stack();
+            s.push(0);
+            s.push(e.size());
+            while (!s.isEmpty()) {
+                int end = (int) s.pop();
+                int start = (int) s.pop();
+                if (start < end) {
+                    int mid = start + (end - start) / 2;
+                    String line = Files.readAllLines(Paths.get(((File) mails.get(mid)).getPath() + "\\index.txt")).get(0);
+                    Date inMid = new SimpleDateFormat("E MMM dd HH:mm:ss z yyyy").parse(line);
+                    inMid.setMinutes(0);
+                    inMid.setHours(0);
+                    inMid.setSeconds(0);
+                    inMid.setMonth(0);
+                    inMid.setYear(0);
+                    d.setMinutes(0);
+                    d.setHours(0);
+                    d.setSeconds(0);
+                    d.setMonth(0);
+                    d.setYear(0);
+                    if (d.compareTo(inMid) < 0) {
+                        s.push(start);
+                        s.push(mid);
+                    } else if (d.compareTo(inMid) > 0) {
+                        s.push(mid + 1);
+                        s.push(end);
+                    } else {
+                        return mid;
+                    }
+                }
+            }
+            return -1;
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
+    }
+    /**
+     * @param x is the Date that we to filter with
+     * @return Returns double Linked List Of the E_Mails with that Date
+     */
+    @Override
+    public doubleLinkedList filterByDayOfDate(Date x) throws IOException, ParseException {
+        if (x!=null) {
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortByDateOldestToNewest();
+            doubleLinkedList filtered = new doubleLinkedList();
+            int i = binarySearchByDayOfDate(x);
+            while (i > -1) {
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
+                i = binarySearchByDayOfDate(x);
+            }
+            e = past;
+            return filtered;
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
+    }
+
     /**
      * @param x is the Subject that we search for
      * @return Returns index of x (Subject) if it is present in double Linked List ,
@@ -314,15 +409,21 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterBySubject(String x) throws IOException, ParseException {
         if (x!=null) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingBySubject();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchBySubject(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
                 i = binarySearchBySubject(x);
             }
-            e = past;
+            e=past;
             return filtered;
         }
         else {
@@ -375,12 +476,18 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterBySender(String x) throws IOException, ParseException {
         if (x!=null) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingBySender();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchBySender(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
                 i = binarySearchBySender(x);
             }
             e = past;
@@ -436,12 +543,18 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterByPriority(int x) throws IOException, ParseException {
         if (x>-1) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingByPriority();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByPriority(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
                 i = binarySearchByPriority(x);
             }
             e = past;
@@ -518,12 +631,18 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterByNumOfReceivers(int x) throws IOException, ParseException {
         if (x>-1) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingByPriority();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfReceivers(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
                 i = binarySearchByNumOfReceivers(x);
             }
             e = past;
@@ -655,12 +774,18 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByNumOfAttachments(int x) throws IOException, ParseException {
         if (x>-1) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingByPriority();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfAttachments(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
                 i = binarySearchByNumOfAttachments(x);
             }
             e = past;
@@ -738,12 +863,18 @@ public class filter implements IFilter{
      */
     public doubleLinkedList filterByNumOfLinesInBody(int x) throws IOException, ParseException {
         if(x>-1) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingByPriority();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfLinesInBody(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
                 i = binarySearchByNumOfLinesInBody(x);
             }
             e = past;
@@ -822,12 +953,18 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByNumOfWordsInBody(int x) throws IOException, ParseException {
         if (x>-1) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingByPriority();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfWordsInBody(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
                 i = binarySearchByNumOfWordsInBody(x);
             }
             e = past;
@@ -908,12 +1045,18 @@ public class filter implements IFilter{
     @Override
     public doubleLinkedList filterByNumOfLettersInBody(int x) throws IOException, ParseException {
         if (x>-1) {
-            doubleLinkedList past = (doubleLinkedList) e.sublist(0, e.size() - 1);
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortAscendingByPriority();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfLettersInBody(x);
             while (i > -1) {
-                filtered.add(e.get(i));
-                e.remove(i);
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
                 i = binarySearchByNumOfLettersInBody(x);
             }
             e = past;
