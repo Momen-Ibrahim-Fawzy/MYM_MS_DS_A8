@@ -41,7 +41,9 @@ public class sort implements ISort{
      * it set the double linked list of the e_mails
      */
     public void setMails(doubleLinkedList mails){
-        m= (doubleLinkedList) mails.sublist(0,mails.size()-1);
+        if(mails!=null&&!mails.isEmpty()) {
+            m = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+        }
     }
     /**
      * @return the double linked list of the e_mails which we want it to be sorted
