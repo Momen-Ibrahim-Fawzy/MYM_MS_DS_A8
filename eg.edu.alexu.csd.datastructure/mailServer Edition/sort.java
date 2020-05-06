@@ -892,4 +892,87 @@ public class sort implements ISort{
         }
         return  mails;
     }
+    /**
+     * it sort a double linked list of contacts by them name(Ascending)
+     * @return the sorted double linked list of contacts by them name
+     * @throws IOException
+     */
+    public doubleLinkedList sortContactAscending() throws IOException {
+        if (m!=null) {
+            if (m.size() > 0) {
+                doubleLinkedList mails = new doubleLinkedList();
+                mails = (doubleLinkedList) m.sublist(0, m.size() - 1);
+                Stack s = new Stack();
+                s.push(0);
+                s.push(mails.size());
+                while (!s.isEmpty()) {
+                    int end = (int) s.pop();
+                    int start = (int) s.pop();
+                    if (end - start < 2) {
+                        continue;
+                    }
+                    int p = start + ((end - start) / 2);
+                    int l = start;
+                    int h = end - 2;
+                    String line = ((File) mails.get(p)).getName();
+                    String temp[]=line.split(".txt");
+                    String piv = temp[0].toLowerCase();
+                    mails.swap(p, end - 1);
+                    while (l < h) {
+                        line = ((File) mails.get(l)).getName();
+                        temp=line.split(".txt");
+                        String inl = temp[0].toLowerCase();
+                        line = ((File) mails.get(h)).getName() ;
+                        temp=line.split(".txt");
+                        String inh = temp[0].toLowerCase();
+                        if (inl.compareTo(piv) < 0) {
+                            l++;
+                        } else if (inh.compareTo(piv) > 0 | inh.equals(piv)) {
+                            h--;
+                        } else {
+                            mails.swap(l, h);
+                        }
+                    }
+                    int idx = h;
+                    line = ((File) mails.get(h)).getName();
+                    temp=line.split(".txt");
+                    String inh = temp[0].toLowerCase();
+                    if (inh.compareTo(piv) < 0) {
+                        idx++;
+                    }
+                    mails.swap(end - 1, idx);
+                    p = idx;
+                    s.push(p + 1);
+                    s.push(end);
+                    s.push(start);
+                    s.push(p);
+                }
+                return mails;
+            }
+            else if(m.isEmpty()){
+                return new doubleLinkedList();
+            }
+            else {
+                RuntimeException Runtime = new RuntimeException();
+                throw Runtime;
+            }
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
+    }
+    /**
+     * it sort a double linked list of contacts by them name(Descending)
+     * @return the sorted double linked list of contacts by them name
+     * @throws IOException
+     */
+    public doubleLinkedList sortContactDescending() throws ParseException, IOException {
+        doubleLinkedList mails = new doubleLinkedList();
+        mails = sortContactAscending();
+        for (int i=0;i<mails.size()/2;i++){
+            mails.swap(i,mails.size()-1-i);
+        }
+        return  mails;
+    }
 }
