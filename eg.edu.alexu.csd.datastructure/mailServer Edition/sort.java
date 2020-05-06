@@ -44,6 +44,13 @@ public class sort implements ISort{
         if(mails!=null&&!mails.isEmpty()) {
             m = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
         }
+        else if(mails.isEmpty()){
+            m=new doubleLinkedList();
+        }
+        else{
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
     }
     /**
      * @return the double linked list of the e_mails which we want it to be sorted
