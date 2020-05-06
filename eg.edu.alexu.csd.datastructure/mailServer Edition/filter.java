@@ -1076,4 +1076,72 @@ public class filter implements IFilter{
             throw Runtime;
         }
     }
+    /**
+     * @param x is the Contact that we search for
+     * @return Returns index of x (Contact) if it is present in double Linked List ,
+     * else return -1
+     */
+    private int binarySearchInContactBySName(String x) throws ParseException, IOException{
+        if (x!=null) {
+            doubleLinkedList mails = new doubleLinkedList();
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortContactAscending();
+            Stack s = new Stack();
+            s.push(0);
+            s.push(e.size());
+            while (!s.isEmpty()) {
+                int end = (int) s.pop();
+                int start = (int) s.pop();
+                if (start < end) {
+                    int mid = start + (end - start) / 2;
+                    String line = ((File) mails.get(mid)).getName();
+                    String temp[]=line.split(".txt");
+                    String inMid = temp[0].toLowerCase();
+                    if (x.toLowerCase().compareTo(inMid) < 0) {
+                        s.push(start);
+                        s.push(mid);
+                    } else if (x.toLowerCase().compareTo(inMid) > 0) {
+                        s.push(mid + 1);
+                        s.push(end);
+                    } else {
+                        return mid;
+                    }
+                }
+            }
+            return -1;
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
+    }
+    /**
+     * @param x is the Subject that we to filter the contacts with
+     * @return Returns double Linked List Of the contacts with that Subject
+     */
+    public doubleLinkedList filterContactByName(String x) throws IOException, ParseException {
+        if (x!=null) {
+            doubleLinkedList mails = new doubleLinkedList();
+            doubleLinkedList past = new doubleLinkedList();
+            past=(doubleLinkedList) e.sublist(0, e.size() - 1);
+            sort sorting = new sort();
+            sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
+            mails = sorting.sortContactAscending();
+            doubleLinkedList filtered = new doubleLinkedList();
+            int i = binarySearchInContactBySName(x);
+            while (i > -1) {
+                filtered.add(mails.get(i));
+                mails.remove(i);
+                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
+                i = binarySearchInContactBySName(x);
+            }
+            e=past;
+            return filtered;
+        }
+        else {
+            NullPointerException NullPointer = new NullPointerException();
+            throw NullPointer;
+        }
+    }
 }
