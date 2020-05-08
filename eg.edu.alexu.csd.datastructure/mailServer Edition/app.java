@@ -158,6 +158,15 @@ public class app implements IApp{
                             throw Runtime;
                         }
                         break;
+                    case "filterReceivers":
+                        try {
+                            filteredMails = filt.filterByReceiver(filt.getReceiver());
+                        } catch (Exception e) {
+                            RuntimeException Runtime = new RuntimeException();
+                            throw Runtime;
+                        }
+                        break;
+
                 }
                 if (sort!=null) {
                     sort s = (sort) sort;
@@ -313,10 +322,12 @@ public class app implements IApp{
                             break;
                     }
                     try {
-                        mailsToBeShown=folder.mails(sortedMails);
+                        mailsToBeShown=folder.mails(sortedMails);///////////////////////////////////////////////////////////////////
                     } catch (Exception e) {
-                        RuntimeException Runtime = new RuntimeException();
-                        throw Runtime;
+                    	
+                        //RuntimeException Runtime = new RuntimeException();
+                    	e.printStackTrace();
+                       // throw Runtime;
                     }
                 }
                 else {
@@ -506,16 +517,6 @@ public class app implements IApp{
         }
         //here i have the mails to be shown to the user in form Linked List Of Arrays of IMails
         //and it is set
-    }
-    @Override
-    public IMail[] listEmails(int page) {
-        if (page>0&mailsToBeShown!=null) {
-            return (IMail[]) mailsToBeShown.get(page - 1);
-        }
-        else {
-            NullPointerException NullPointer = new NullPointerException();
-            throw NullPointer;
-        }
     }
 
     @Override
