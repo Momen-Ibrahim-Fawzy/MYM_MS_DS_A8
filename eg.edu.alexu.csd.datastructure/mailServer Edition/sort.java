@@ -1,18 +1,20 @@
-package eg.edu.alexu.csd.datastructure.mailServer;
+package mailServer;
 
-import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
-import eg.edu.alexu.csd.datastructure.stacks.Stack;
+import linkedList.doubleLinkedList;
+import stacks.Stack;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Scanner;
 
 public class sort implements ISort{
-    /**
+	/**
      * sortByDateOldestToNewest or sortByDateNewestToOldest or sortAscendingBySubject or sortDescendingBySubject
      * or sortAscendingBySender or sortDescendingBySender or sortAscendingByPriority or sortDescendingByPriority
      * or sortAscendingByNumOfLinesInBody or sortDescendingByNumOfLinesInBody or sortAscendingByNumOfWordsInBody
@@ -495,7 +497,7 @@ public class sort implements ISort{
             int numOfWords = 0;
             String line1;
             while (!((line1 = br.readLine()) == null)) {
-                String[] s = (line1.split(" "));
+                String[] s = line1.split("\\s+ ");
                 numOfWords += s.length;
             }
             return numOfWords;
@@ -597,7 +599,7 @@ public class sort implements ISort{
             int numOfLetters = 0;
             String line1;
             while (!((line1 = br.readLine()) == null)) {
-                String[] s = (line1.split(" "));
+                String[] s = (line1.split("\\s+"));
                 for (int i = 0; i < s.length; i++) {
                     numOfLetters += s[i].length();
                 }
@@ -897,6 +899,7 @@ public class sort implements ISort{
      * @return the sorted double linked list of contacts by them name
      * @throws IOException
      */
+    @Override
     public doubleLinkedList sortContactAscending() throws IOException {
         if (m!=null) {
             if (m.size() > 0) {
@@ -967,6 +970,7 @@ public class sort implements ISort{
      * @return the sorted double linked list of contacts by them name
      * @throws IOException
      */
+    @Override
     public doubleLinkedList sortContactDescending() throws ParseException, IOException {
         doubleLinkedList mails = new doubleLinkedList();
         mails = sortContactAscending();
@@ -974,5 +978,27 @@ public class sort implements ISort{
             mails.swap(i,mails.size()-1-i);
         }
         return  mails;
+    }
+
+    public static void main(String[] args) {
+        File f1=new File("System");
+        app momen = new app();
+        folder fold = new folder();
+        fold.setPath("System\\marwangabal@mym.com\\Sent");
+        sort s=new sort();
+        s.setType("sortByDateNewestToOldest");
+        filter f=new filter();
+        f.setType("filterByNumOfReceivers");
+        f.setNumOfReceivers(2);
+        momen.setViewingOptions(fold,f,s);
+        if(!momen.getMailsToBeShown().isEmpty()) {
+            for(int j=0;j<momen.getMailsToBeShown().size();j++) {
+                for (int i = 0; i < 10; i++) {
+                    if (((IMail[]) momen.getMailsToBeShown().get(j))[i] != null) {
+                        System.out.println(((IMail[]) momen.getMailsToBeShown().get(j))[i].getId());
+                    }
+                }
+            }
+        }
     }
 }
