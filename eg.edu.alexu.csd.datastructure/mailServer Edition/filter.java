@@ -1,7 +1,7 @@
-package eg.edu.alexu.csd.datastructure.mailServer;
+package mailServer;
 
-import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
-import eg.edu.alexu.csd.datastructure.stacks.Stack;
+import linkedList.doubleLinkedList;
+import stacks.Stack;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,7 +15,8 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class filter implements IFilter{
-    /**
+  
+	/**
      * filterByDate or filterBySubject or filterBySender or filterByPriority
      * or filterByNumOfReceivers or filterByNumOfAttachments or filterByNumOfLinesInBody
      * or filterByNumOfWordsInBody or filterByNumOfLettersInBody
@@ -93,8 +94,28 @@ public class filter implements IFilter{
      * @return the Subject
      */
     @Override
+    /**
+     * return the subject
+     */
     public String getSubject() {
         return subject;
+    }
+    private String receiver;
+    /**
+     * set the receiver
+     * @param receiver
+     */
+    @Override
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
+    }
+    /**
+     * get the receiver
+     * @return the receiver
+     */
+    @Override
+    public String getReceiver() {
+        return receiver;
     }
     private String sender;
     /**
@@ -290,7 +311,12 @@ public class filter implements IFilter{
                 while (i > -1) {
                     filtered.add(mails.get(i));
                     mails.remove(i);
+                    if(mails.isEmpty()) {
+                    	e=new doubleLinkedList();
+                    }
+                    else {
                     e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                    }
                     i = binarySearchByCompleteDate(x);
                 }
                 e = past;
@@ -388,7 +414,12 @@ public class filter implements IFilter{
                 while (i > -1) {
                     filtered.add(mails.get(i));
                     mails.remove(i);
+                    if(mails.isEmpty()) {
+                    	e=new doubleLinkedList();
+                    }
+                    else {
                     e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                    }
                     i = binarySearchByDayOfDate(x);
                 }
                 e = past;
@@ -475,7 +506,12 @@ public class filter implements IFilter{
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
-                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchBySubject(x);
             }
             e=past;
@@ -560,7 +596,12 @@ public class filter implements IFilter{
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
-                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchBySender(x);
             }
             e = past;
@@ -645,7 +686,12 @@ public class filter implements IFilter{
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
                 e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchByPriority(x);
             }
             e = past;
@@ -745,13 +791,18 @@ public class filter implements IFilter{
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortAscendingByPriority();
+            mails = sorting.sortAscendingByNumOfReceivers();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfReceivers(x);
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
                 e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchByNumOfReceivers(x);
             }
             e = past;
@@ -802,7 +853,7 @@ public class filter implements IFilter{
      * @return Returns double Linked List Of the E_Mails with that seme Receiver x
      */
     @Override
-    public doubleLinkedList filterByReceivers(String x) throws IOException, ParseException {
+    public doubleLinkedList filterByReceiver(String x) throws IOException, ParseException {
         if (x!=null) {
             if (e!=null) {
                 doubleLinkedList filtered = new doubleLinkedList();
@@ -912,13 +963,18 @@ public class filter implements IFilter{
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortAscendingByPriority();
+            mails = sorting.sortAscendingByNumOfAttachments();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfAttachments(x);
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
                 e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchByNumOfAttachments(x);
             }
             e = past;
@@ -1019,13 +1075,18 @@ public class filter implements IFilter{
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortAscendingByPriority();
+            mails = sorting.sortAscendingByNumOfLinesInBody();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfLinesInBody(x);
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
                 e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchByNumOfLinesInBody(x);
             }
             e = past;
@@ -1057,7 +1118,7 @@ public class filter implements IFilter{
             int numOfWords = 0;
             String line1;
             while (!((line1 = br.readLine()) == null)) {
-                String[] s = (line1.split(" "));
+                String[] s = (line1.split("\\s+"));
                 numOfWords += s.length;
             }
             return numOfWords;
@@ -1127,13 +1188,18 @@ public class filter implements IFilter{
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortAscendingByPriority();
+            mails = sorting.sortAscendingByNumOfWordsInBody();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfWordsInBody(x);
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
                 e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchByNumOfWordsInBody(x);
             }
             e = past;
@@ -1165,7 +1231,7 @@ public class filter implements IFilter{
             int numOfLetters = 0;
             String line1;
             while (!((line1 = br.readLine()) == null)) {
-                String[] s = (line1.split(" "));
+                String[] s = (line1.split("\\s+"));
                 for (int i = 0; i < s.length; i++) {
                     numOfLetters += s[i].length();
                 }
@@ -1237,13 +1303,18 @@ public class filter implements IFilter{
             past=(doubleLinkedList) e.sublist(0, e.size() - 1);
             sort sorting = new sort();
             sorting.setMails((doubleLinkedList) e.sublist(0, e.size() - 1));
-            mails = sorting.sortAscendingByPriority();
+            mails = sorting.sortAscendingByNumOfLettersInBody();
             doubleLinkedList filtered = new doubleLinkedList();
             int i = binarySearchByNumOfLettersInBody(x);
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
                 e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchByNumOfLettersInBody(x);
             }
             e = past;
@@ -1316,6 +1387,7 @@ public class filter implements IFilter{
      * @param x is the Subject that we to filter the contacts with
      * @return Returns double Linked List Of the contacts with that Subject
      */
+    @Override
     public doubleLinkedList filterContactByName(String x) throws IOException, ParseException {
         if (x!=null) {
             if (e != null && e.size() > 0) {
@@ -1330,7 +1402,12 @@ public class filter implements IFilter{
             while (i > -1) {
                 filtered.add(mails.get(i));
                 mails.remove(i);
-                e=(doubleLinkedList) mails.sublist(0,mails.size()-1);
+                if(mails.isEmpty()) {
+                	e=new doubleLinkedList();
+                }
+                else {
+                e = (doubleLinkedList) mails.sublist(0, mails.size() - 1);
+                }
                 i = binarySearchInContactBySName(x);
             }
             e=past;
