@@ -1,6 +1,6 @@
-package eg.edu.alexu.csd.datastructure.mailServer;
+package mailServer;
 
-import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
+import linkedList.doubleLinkedList;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -46,6 +46,16 @@ public interface IFilter {
      * @return the subject
      */
     public String getSubject();
+    /**
+     * set the receiver
+     * @param receiver
+     */
+    public void setReceiver(String receiver);
+    /**
+     * get the receiver
+     * @return the receiver
+     */
+    public String getReceiver();
     /**
      * set the sender
      * @param sender
@@ -117,10 +127,16 @@ public interface IFilter {
      */
     public int getNumOfLettersInBody();
     /**
-     * @param x is the Date that we to filter with
+     * @param x is the Date(complete) that we to filter with
      * @return Returns double Linked List Of the E_Mails with that Date
      */
-    public doubleLinkedList filterByDate(Date x) throws IOException, ParseException;
+    public doubleLinkedList filterByCompleteDate(Date x) throws IOException, ParseException;
+    /**
+     * @param x is the Date(Day) that we to filter with
+     * @return Returns double Linked List Of the E_Mails with that Date
+     */
+    public doubleLinkedList filterByDayOfDate(Date x) throws IOException, ParseException;
+    
     /**
      * @param x is the Subject that we to filter with
      * @return Returns double Linked List Of the E_Mails with that Subject
@@ -142,6 +158,11 @@ public interface IFilter {
      */
     public doubleLinkedList filterByNumOfReceivers(int x) throws IOException, ParseException;
     /**
+     * @param x is the Receiver that we want to filter with
+     * @return Returns double Linked List Of the E_Mails with that seme Receiver x
+     */
+    public doubleLinkedList filterByReceiver(String x) throws IOException, ParseException;
+    /**
      * @param x is the Num Of Attachments that we want to filter with
      * @return Returns double Linked List Of the E_Mails with that Num Of Attachments
      */
@@ -161,4 +182,9 @@ public interface IFilter {
      * @return Returns double Linked List Of the E_Mails with that Num Of Letters In Body
      */
     public doubleLinkedList filterByNumOfLettersInBody(int x) throws IOException, ParseException;
+    /**
+     * @param x is the Subject that we to filter the contacts with
+     * @return Returns double Linked List Of the contacts with that Subject
+     */
+    public doubleLinkedList filterContactByName(String x) throws IOException, ParseException;
 }
