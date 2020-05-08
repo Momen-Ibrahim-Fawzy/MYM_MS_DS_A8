@@ -1,6 +1,7 @@
-package eg.edu.alexu.csd.datastructure.mailServer;
+package mailServer;
 
-import eg.edu.alexu.csd.datastructure.linkedList.doubleLinkedList;
+
+import linkedList.doubleLinkedList;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -106,4 +107,16 @@ public interface ISort {
      * @return a sorted double linked list of folders of e_mails by the its Num Of Attachments(Descending)
      */
     public doubleLinkedList sortDescendingByNumOfAttachments() throws ParseException, IOException;
+    /**
+     * it sort a double linked list of contacts by them name(Ascending)
+     * @return the sorted double linked list of contacts by them name
+     * @throws IOException
+     */
+    public doubleLinkedList sortContactAscending() throws IOException;
+    /**
+     * it sort a double linked list of contacts by them name(Descending)
+     * @return the sorted double linked list of contacts by them name
+     * @throws IOException
+     */
+    public doubleLinkedList sortContactDescending() throws ParseException, IOException;
 }
