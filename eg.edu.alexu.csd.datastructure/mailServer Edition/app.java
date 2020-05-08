@@ -75,6 +75,15 @@ public class app implements IApp{
                     e.printStackTrace();
                 }
             }
+            else if (new File(folder.getPath()).getName().equals("Contact")){
+                File f= new File(folder.getPath());
+                File[] files = f.listFiles();
+                for (int i=0 ; i<files.length;i++){
+                    if (files[i].isFile()){
+                        mails.add(files[i]);
+                    }
+                }
+            }
             else {
                 mails = fold.getMailsFolders();
             }
