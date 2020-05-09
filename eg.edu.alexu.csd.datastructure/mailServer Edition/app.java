@@ -354,12 +354,10 @@ public class app implements IApp{
                             break;
                     }
                     try {
-                        mailsToBeShown=folder.mails(sortedMails);///////////////////////////////////////////////////////////////////
+                        mailsToBeShown=folder.mails(sortedMails);
                     } catch (Exception e) {
-                    	
-                        //RuntimeException Runtime = new RuntimeException();
-                    	e.printStackTrace();
-                       // throw Runtime;
+                        RuntimeException Runtime = new RuntimeException();
+                        throw Runtime;
                     }
                 }
                 else {
