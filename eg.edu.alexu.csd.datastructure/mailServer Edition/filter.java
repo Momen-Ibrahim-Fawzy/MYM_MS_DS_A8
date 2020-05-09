@@ -1001,8 +1001,8 @@ public class filter implements IFilter{
      */
     private int numOfLinesInBody(File f) throws IOException {
         if (f!=null) {
-            Scanner sc = new Scanner(new File(f + "\\body.txt"));
-            FileReader fr = new FileReader(new File(f + "\\body.txt"));
+            Scanner sc = new Scanner(new File(f +"\\"+ Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1) + ".txt"));
+            FileReader fr = new FileReader(new File(f +"\\"+ Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1) + ".txt"));
             BufferedReader br = new BufferedReader(fr);
             int numOfLines = 0;
             String line1;
@@ -1113,7 +1113,7 @@ public class filter implements IFilter{
      */
     private int numOfWordsInBody(File f) throws IOException {
         if (f!=null) {
-            FileReader fr = new FileReader(new File(f + "\\body.txt"));
+            FileReader fr = new FileReader(new File(f +"\\"+ Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1) + ".txt"));
             BufferedReader br = new BufferedReader(fr);
             int numOfWords = 0;
             String line1;
@@ -1226,7 +1226,7 @@ public class filter implements IFilter{
      */
     private int numOfLettersInBody(File f) throws IOException {
         if (f!=null) {
-            FileReader fr = new FileReader(new File(f + "\\body.txt"));
+            FileReader fr = new FileReader(new File(f +"\\"+ Files.readAllLines(Paths.get((f.getPath() + "\\index.txt"))).get(1) + ".txt"));
             BufferedReader br = new BufferedReader(fr);
             int numOfLetters = 0;
             String line1;
