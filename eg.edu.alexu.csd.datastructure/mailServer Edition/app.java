@@ -167,7 +167,7 @@ public class app implements IApp{
                             throw Runtime;
                         }
                         break;
-                    case "filterReceivers":
+                    case "filterByReceiver":
                         try {
                             filteredMails = filt.filterByReceiver(filt.getReceiver());
                         } catch (Exception e) {
@@ -175,7 +175,14 @@ public class app implements IApp{
                             throw Runtime;
                         }
                         break;
-
+                    case "filterContactByName":
+                        try {
+                            filteredMails = filt.filterContactByName(filt.getReceiver());
+                        } catch (Exception e) {
+                            RuntimeException Runtime = new RuntimeException();
+                            throw Runtime;
+                        }
+                        break;
                 }
                 if (sort!=null) {
                     sort s = (sort) sort;
@@ -324,6 +331,22 @@ public class app implements IApp{
                         case "sortDescendingByNumOfAttachments":
                             try {
                                 sortedMails=s.sortDescendingByNumOfAttachments();
+                            } catch (Exception e) {
+                                RuntimeException Runtime = new RuntimeException();
+                                throw Runtime;
+                            }
+                            break;
+                        case "sortContactAscending":
+                            try {
+                                sortedMails=s.sortContactAscending();
+                            } catch (Exception e) {
+                                RuntimeException Runtime = new RuntimeException();
+                                throw Runtime;
+                            }
+                            break;
+                        case "sortContactDescending":
+                            try {
+                                sortedMails=s.sortContactDescending();
                             } catch (Exception e) {
                                 RuntimeException Runtime = new RuntimeException();
                                 throw Runtime;
@@ -500,6 +523,22 @@ public class app implements IApp{
                             break;
                         case "" :
                             sortedMails=mails;
+                            break;
+                        case "sortContactAscending":
+                            try {
+                                sortedMails=s.sortContactAscending();
+                            } catch (Exception e) {
+                                RuntimeException Runtime = new RuntimeException();
+                                throw Runtime;
+                            }
+                            break;
+                        case "sortContactDescending":
+                            try {
+                                sortedMails=s.sortContactDescending();
+                            } catch (Exception e) {
+                                RuntimeException Runtime = new RuntimeException();
+                                throw Runtime;
+                            }
                             break;
                     }
                     try {
