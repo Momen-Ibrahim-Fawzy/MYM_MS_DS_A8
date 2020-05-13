@@ -27,8 +27,7 @@ import mailServer.app;
 import mailServer.contact;
 import mailServer.folder;
 
-public class
-register extends JFrame {
+public class register extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -208,8 +207,9 @@ register extends JFrame {
 					lblNotTheSame.setVisible(true);
 				else
 					lblNotTheSame.setVisible(false);
-				if(f.checkExistUsername(user)&&user.length()!=0)
+				if(f.checkExistUsername(user)&&user.length()!=0) {
 					lblNewLabel_9.setVisible(true);
+				}
 				else
 					lblNewLabel_9.setVisible(false);
 				if(name.length()==0||user.length()==0||pass.length()==0||dateChooser.getDate()==null) {
@@ -241,7 +241,11 @@ register extends JFrame {
 					SimpleDateFormat dformat=new SimpleDateFormat("dd/MM/yyyy");			
 					birth= dformat.format(dateChooser.getDate());
 					test2.setName(name);
+					try {
 					test2.setEmails(user);
+					}catch(Exception e1) {
+						e1.getMessage();
+					}
 					test2.setPassword(pass);
 					test2.setBirthDate(birth);
 					if(test2.checkContactForSignUp()) {
