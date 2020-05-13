@@ -4,13 +4,18 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,10 +26,18 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import mailServer.mail;
+
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+import java.awt.CardLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ScrollPaneConstants;
+import java.awt.Component;
 import javax.swing.UIManager;
 
-public class mailInfoShow extends JFrame {
+public class nail_info_show extends JFrame {
 
 	private JPanel contentPane;
 	private JLabel lblNewLabel_1;
@@ -46,15 +59,14 @@ public class mailInfoShow extends JFrame {
 	      };
 	private Object[] header = {"Attachment_Name"};
 	public JTable table;
-	private mail_form c=new mail_form();
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable(){
+		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					mailInfoShow frame = new mailInfoShow();
+					nail_info_show frame = new nail_info_show();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,7 +78,7 @@ public class mailInfoShow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public mailInfoShow() {
+	public nail_info_show() {
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1089, 668);
@@ -175,13 +187,11 @@ public class mailInfoShow extends JFrame {
 		panel.add(panel_2);
 		table = new JTable(rec, header);
 		table.setForeground(Color.BLUE);
-		c.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		c.dispose();
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int index = table.getSelectedRow();
-                File f=new File(c.id);
+                File f=new File(mail_form.id);
                 File[] attachment=f.listFiles();
 				try {
 					Desktop.getDesktop().open(attachment[index]);
