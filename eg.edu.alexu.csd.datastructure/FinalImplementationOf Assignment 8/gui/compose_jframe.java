@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
@@ -286,6 +287,7 @@ public class compose_jframe extends JFrame {
 							Date date=new Date();
 					        newMail.setDate(date);
 							newMail.send();
+							fill_sent_table(mail_form.table,1);
 							textArea.setText("");
 							textArea_1.setText("");
 							textArea_2.setText("");
@@ -672,5 +674,35 @@ public class compose_jframe extends JFrame {
 		}
 		else
 			return 10;
+	}
+	public void fill_sent_table(JTable table , int pachage) {
+		mail_form.sort.setType("sortByDateNewestToOldest");
+		String [] arr=signIn.app.folder.getPath().split("/",5);
+		while(arr.length>2) {
+			signIn.app.folder.setPath(signIn.app.folder.backStep());
+			arr=signIn.app.folder.getPath().split("/",5);
+		}
+		signIn.app.folder.setPath(signIn.app.folder.getPath()+"/Sent");
+		try {
+			signIn.app.setViewingOptions(signIn.app.folder,mail_form.filter,mail_form.sort);
+			IMail [] info=signIn.app.listEmails(pachage);
+			for(int i=0 ; i<info.length;i++) {
+				if(info[i]==null) {
+					break;
+				}
+				table.setValueAt(info[i].getSubject(),i, 0);
+				String reciever ="";
+				while(!info[i].getReceiver().isEmpty()) {
+					reciever+=info[i].getReceiver().dequeue().toString();
+					if(!info[i].getReceiver().isEmpty()) {
+						reciever+=",";
+					}
+				}
+				table.setValueAt(reciever,i, 1);
+				table.setValueAt(info[i].getDate(),i, 2);
+			}
+		}catch(Exception e1) {
+			e1.getMessage();
+		}
 	}
 }
