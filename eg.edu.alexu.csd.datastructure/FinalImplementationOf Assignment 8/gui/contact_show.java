@@ -178,6 +178,8 @@ public class contact_show extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				panel_8.setVisible(true);
+				lblNewLabel.setVisible(false);
+				textField_1.setText("");
 				check1=true;
 				check2=false;
 			}
@@ -370,6 +372,7 @@ public class contact_show extends JFrame {
 		lblDone.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				contact contact = new contact();
 				if(check1) {
 					contact.setFolder(signIn.app.folder);
 					contact.setName(textField.getText());
@@ -447,4 +450,5 @@ public class contact_show extends JFrame {
 		checkBox_4.setSelected(false);
 		
 	}
+	
 }
