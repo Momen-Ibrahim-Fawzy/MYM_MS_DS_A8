@@ -85,10 +85,10 @@ public class mail_form extends JFrame {
 	private JCheckBox checkBox_8;
 	private JCheckBox checkBox_9;
 	private signIn signin=new signIn();
-	public static mailInfoShow c=new mailInfoShow();
+	public static nail_info_show c=new nail_info_show();
 	public static int [] num_page= {1,1,1,1,1};
-	private ISort sort=new sort();
-	private IFilter filter=new filter();
+	public static ISort sort=new sort();
+	public static IFilter filter=new filter();
 	private JTextField textField_1;
 	private JLabel lblNewLabel_5;
 	private JPanel panel_13;
@@ -98,6 +98,28 @@ public class mail_form extends JFrame {
 	private static compose_jframe compose=new compose_jframe();
 	private JPanel panel_17;
 	private static boolean cv=true;
+	private JPanel panel_5;
+	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmBydateoldesttonewest;
+	private JMenuItem mntmAscendingbysubject;
+	private JMenuItem mntmDescendingbysubject;
+	private JMenuItem mntmNewMenuItem_1;
+	private JMenuItem mntmDescendingbysender;
+	private JMenuItem mntmAscendingbypriority;
+	private JMenuItem mntmDescendingbypriority;
+	private JMenuItem mntmNewMenuItem_2;
+	private JMenuItem mntmDescendingbynumoflinesinbody;
+	private JMenuItem mntmAscendingbynumofwordsinbody;
+	private JMenuItem mntmDescendingbynumofwordsinbody;
+	private JMenuItem mntmAscendingbynumoflettersinbody;
+	private JMenuItem mntmDescendingbynumoflettersinbody;
+	private JMenuItem mntmAscendingbynumofreceivers;
+	private JMenuItem mntmDescendingbynumofreceivers;
+	private JMenuItem mntmAscendingbynumofattachments;
+	private JMenuItem mntmDescendingbynumofattachments;
+	private JMenuItem mntmContactSort;
+	private JMenuItem mntmSortcontactdescending;
+	private JPanel panel_12;
 	
 
 	
@@ -203,6 +225,7 @@ public class mail_form extends JFrame {
 		panel_3.setBackground(Color.BLACK);
 		panel_3.setPreferredSize(new Dimension(202, 130));
 		panel_2.add(panel_3);
+		
 		btnNewButton = new JButton("Contact");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -215,8 +238,10 @@ public class mail_form extends JFrame {
 				change_title_name("Name:",0);
 				num_page[0]=1;
 				panel_13.setVisible(true);
-				lblSearch.setText("Search for Contact");
-				fill_contact(table,num_page[0]);
+				lblNewLabel_5.setVisible(false);
+				contactfilter();
+				panel_12.setVisible(true);
+		        fill_contact(table,num_page[0]);
 			}
 		});
 		btnNewButton.setFocusPainted(false);
@@ -245,9 +270,12 @@ public class mail_form extends JFrame {
 				change_title_name("Sender:",1);
 				change_title_name("Date:",2);
 				panel_13.setVisible(false);
+				filter_sort();
+				panel_12.setVisible(true);
 				lblSearch.setText("SearchBysender:");
 				fill_inbox_table(table,num_page[1]);
 			}
+				
 		});
 		btnInbox.setFocusPainted(false);
 		btnInbox.setFocusTraversalKeysEnabled(false);
@@ -275,6 +303,8 @@ public class mail_form extends JFrame {
 				change_title_name("Reciever:",1);
 				change_title_name("Date:",2);
 				panel_13.setVisible(false);
+				filter_sort();
+				panel_12.setVisible(true);
 				lblSearch.setText("SearchByReciever:");
 				fill_sent_table(table ,num_page[2]);
 			}
@@ -305,6 +335,8 @@ public class mail_form extends JFrame {
 				change_title_name("Reciever:",1);
 				change_title_name("Date:",2);
 				panel_13.setVisible(false);
+				filter_sort();
+				panel_12.setVisible(true);
 				lblSearch.setText("SearchByReciever:");
 				fill_Draft_table( table ,num_page[3]);
 				
@@ -337,6 +369,8 @@ public class mail_form extends JFrame {
 				change_title_name("Reciever:",2);
 				change_title_name("Date:",3);
 				panel_13.setVisible(false);
+				filter_sort();
+				panel_12.setVisible(false);
 				lblSearch.setText("SearchBysender:");
 				fill_Trash_table(table ,num_page[4]);
 			}
@@ -370,7 +404,7 @@ public class mail_form extends JFrame {
 		panel_17.setLayout(null);
 		panel_17.setBackground(Color.BLACK);
 		
-		lblSearch = new JLabel("Search:");
+		lblSearch = new JLabel("SearchByReciever:");
 		lblSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblSearch.addMouseListener(new MouseAdapter() {
 			@Override
@@ -449,7 +483,7 @@ public class mail_form extends JFrame {
 		lblSearch.setBounds(0, 0, 187, 42);
 		panel_17.add(lblSearch);
 		
-		JPanel panel_5 = new JPanel();
+		panel_5 = new JPanel();
 		panel_5.setBackground(Color.WHITE);
 		panel_5.setBounds(226, 126, 83, 35);
 		contentPane.add(panel_5);
@@ -646,17 +680,17 @@ public class mail_form extends JFrame {
 		mnNewMenu_2.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		menuBar_2.add(mnNewMenu_2);
 		
-		JMenuItem mntmNewMenuItem_2 = new JMenuItem("ByDateNewestToOldest");
-		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+		mntmNewMenuItem = new JMenuItem("ByDateNewestToOldest");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortByDateNewestToOldest");
 				sort_table(table);
 			}
 		});
-		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		mnNewMenu_2.add(mntmNewMenuItem_2);
+		mntmNewMenuItem.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		mnNewMenu_2.add(mntmNewMenuItem);
 		
-		JMenuItem mntmBydateoldesttonewest = new JMenuItem("ByDateOldestToNewest");
+		mntmBydateoldesttonewest = new JMenuItem("ByDateOldestToNewest");
 		mntmBydateoldesttonewest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortByDateOldestToNewest");
@@ -666,7 +700,7 @@ public class mail_form extends JFrame {
 		mntmBydateoldesttonewest.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		mnNewMenu_2.add(mntmBydateoldesttonewest);
 		
-		JMenuItem mntmAscendingbysubject = new JMenuItem("AscendingBySubject");
+		mntmAscendingbysubject = new JMenuItem("AscendingBySubject");
 		mntmAscendingbysubject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingBySubject");
@@ -676,7 +710,7 @@ public class mail_form extends JFrame {
 		mntmAscendingbysubject.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		mnNewMenu_2.add(mntmAscendingbysubject);
 		
-		JMenuItem mntmDescendingbysubject = new JMenuItem("DescendingBySubject");
+		mntmDescendingbysubject = new JMenuItem("DescendingBySubject");
 		mntmDescendingbysubject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingBySubject");
@@ -686,17 +720,17 @@ public class mail_form extends JFrame {
 		mntmDescendingbysubject.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		mnNewMenu_2.add(mntmDescendingbysubject);
 		
-		JMenuItem mntmNewMenuItem_3 = new JMenuItem("AscendingBySender");
-		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+		mntmNewMenuItem_1 = new JMenuItem("AscendingBySender");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingBySender");
 				sort_table(table);
 			}
 		});
-		mntmNewMenuItem_3.setFont(new Font("Segoe UI", Font.BOLD, 16));
-		mnNewMenu_2.add(mntmNewMenuItem_3);
+		mntmNewMenuItem_1.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		mnNewMenu_2.add(mntmNewMenuItem_1);
 		
-		JMenuItem mntmDescendingbysender = new JMenuItem("DescendingBySender");
+		mntmDescendingbysender = new JMenuItem("DescendingBySender");
 		mntmDescendingbysender.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingBySender");
@@ -706,7 +740,7 @@ public class mail_form extends JFrame {
 		mntmDescendingbysender.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		mnNewMenu_2.add(mntmDescendingbysender);
 		
-		JMenuItem mntmAscendingbypriority = new JMenuItem("AscendingByPriority");
+		mntmAscendingbypriority = new JMenuItem("AscendingByPriority");
 		mntmAscendingbypriority.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingByPriority");
@@ -716,7 +750,7 @@ public class mail_form extends JFrame {
 		mntmAscendingbypriority.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		mnNewMenu_2.add(mntmAscendingbypriority);
 		
-		JMenuItem mntmDescendingbypriority = new JMenuItem("DescendingByPriority");
+		mntmDescendingbypriority = new JMenuItem("DescendingByPriority");
 		mntmDescendingbypriority.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingByPriority");
@@ -726,17 +760,17 @@ public class mail_form extends JFrame {
 		mntmDescendingbypriority.setFont(new Font("Segoe UI", Font.BOLD, 16));
 		mnNewMenu_2.add(mntmDescendingbypriority);
 		
-		JMenuItem mntmNewMenuItem_4 = new JMenuItem("AscendingByNumOfLinesInBody");
-		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+		mntmNewMenuItem_2 = new JMenuItem("AscendingByNumOfLinesInBody");
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingByNumOfLinesInBody");
 				sort_table(table);
 			}
 		});
-		mntmNewMenuItem_4.setFont(new Font("Segoe UI", Font.BOLD, 14));
-		mnNewMenu_2.add(mntmNewMenuItem_4);
+		mntmNewMenuItem_2.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		mnNewMenu_2.add(mntmNewMenuItem_2);
 		
-		JMenuItem mntmDescendingbynumoflinesinbody = new JMenuItem("DescendingByNumOfLinesInBody");
+		mntmDescendingbynumoflinesinbody = new JMenuItem("DescendingByNumOfLinesInBody");
 		mntmDescendingbynumoflinesinbody.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingByNumOfLinesInBody");
@@ -746,7 +780,7 @@ public class mail_form extends JFrame {
 		mntmDescendingbynumoflinesinbody.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmDescendingbynumoflinesinbody);
 		
-		JMenuItem mntmAscendingbynumofwordsinbody = new JMenuItem("AscendingByNumOfWordsInBody");
+		mntmAscendingbynumofwordsinbody = new JMenuItem("AscendingByNumOfWordsInBody");
 		mntmAscendingbynumofwordsinbody.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingByNumOfWordsInBody");
@@ -756,7 +790,7 @@ public class mail_form extends JFrame {
 		mntmAscendingbynumofwordsinbody.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmAscendingbynumofwordsinbody);
 		
-		JMenuItem mntmDescendingbynumofwordsinbody = new JMenuItem("DescendingByNumOfWordsInBody");
+		mntmDescendingbynumofwordsinbody = new JMenuItem("DescendingByNumOfWordsInBody");
 		mntmDescendingbynumofwordsinbody.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingByNumOfWordsInBody");
@@ -766,7 +800,7 @@ public class mail_form extends JFrame {
 		mntmDescendingbynumofwordsinbody.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmDescendingbynumofwordsinbody);
 		
-		JMenuItem mntmAscendingbynumoflettersinbody = new JMenuItem("AscendingByNumOfLettersInBody");
+		mntmAscendingbynumoflettersinbody = new JMenuItem("AscendingByNumOfLettersInBody");
 		mntmAscendingbynumoflettersinbody.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingByNumOfLettersInBody");
@@ -776,7 +810,7 @@ public class mail_form extends JFrame {
 		mntmAscendingbynumoflettersinbody.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmAscendingbynumoflettersinbody);
 		
-		JMenuItem mntmDescendingbynumoflettersinbody = new JMenuItem("DescendingByNumOfLettersInBody");
+		mntmDescendingbynumoflettersinbody = new JMenuItem("DescendingByNumOfLettersInBody");
 		mntmDescendingbynumoflettersinbody.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingByNumOfLettersInBody");
@@ -786,7 +820,7 @@ public class mail_form extends JFrame {
 		mntmDescendingbynumoflettersinbody.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmDescendingbynumoflettersinbody);
 		
-		JMenuItem mntmAscendingbynumofreceivers = new JMenuItem("AscendingByNumOfReceivers");
+		mntmAscendingbynumofreceivers = new JMenuItem("AscendingByNumOfReceivers");
 		mntmAscendingbynumofreceivers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingByNumOfReceivers");
@@ -796,7 +830,7 @@ public class mail_form extends JFrame {
 		mntmAscendingbynumofreceivers.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmAscendingbynumofreceivers);
 		
-		JMenuItem mntmDescendingbynumofreceivers = new JMenuItem("DescendingByNumOfReceivers");
+		mntmDescendingbynumofreceivers = new JMenuItem("DescendingByNumOfReceivers");
 		mntmDescendingbynumofreceivers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingByNumOfReceivers");
@@ -806,7 +840,7 @@ public class mail_form extends JFrame {
 		mntmDescendingbynumofreceivers.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmDescendingbynumofreceivers);
 		
-		JMenuItem mntmAscendingbynumofattachments = new JMenuItem("AscendingByNumOfAttachments");
+		mntmAscendingbynumofattachments = new JMenuItem("AscendingByNumOfAttachments");
 		mntmAscendingbynumofattachments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortAscendingByNumOfAttachments");
@@ -816,7 +850,7 @@ public class mail_form extends JFrame {
 		mntmAscendingbynumofattachments.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmAscendingbynumofattachments);
 		
-		JMenuItem mntmDescendingbynumofattachments = new JMenuItem("DescendingByNumOfAttachments");
+		mntmDescendingbynumofattachments = new JMenuItem("DescendingByNumOfAttachments");
 		mntmDescendingbynumofattachments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				sort.setType("sortDescendingByNumOfAttachments");
@@ -825,6 +859,26 @@ public class mail_form extends JFrame {
 		});
 		mntmDescendingbynumofattachments.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		mnNewMenu_2.add(mntmDescendingbynumofattachments);
+		
+		mntmContactSort = new JMenuItem("SortContactAscending");
+		mntmContactSort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort.setType("sortContactAscending");
+				fill_contact(table ,num_page[0]);
+			}
+		});
+		mntmContactSort.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		mnNewMenu_2.add(mntmContactSort);
+		
+		mntmSortcontactdescending = new JMenuItem("SortContactDescending");
+		mntmSortcontactdescending.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				sort.setType("sortContactDescending");
+				fill_contact(table ,num_page[0]);
+			}
+		});
+		mntmSortcontactdescending.setFont(new Font("Segoe UI", Font.BOLD, 20));
+		mnNewMenu_2.add(mntmSortcontactdescending);
 		
 		JPanel panel_7 = new JPanel();
 		panel_7.setBackground(Color.BLACK);
@@ -846,6 +900,10 @@ public class mail_form extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				compose.radioButton_8.setSelected(true);
+				compose.textArea_1.setText("");
+				compose.textArea_2.setText("");
+				compose.textArea_3.setText("");
+				compose.textArea.setText("");
 				compose.setVisible(true);
 				compose.setLocationRelativeTo(null);
 				compose.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -872,6 +930,9 @@ public class mail_form extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int index = table.getSelectedRow();
 				File file= new File(signin.app.folder.getPath());
+				for(int i=0 ; i<5 ; i++) {
+					contactshow.table.setValueAt("", i, 0);
+				}
 				
 				if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Contact")) {
 					try {
@@ -907,17 +968,13 @@ public class mail_form extends JFrame {
 				}
 				else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Draft")) {
 					 compose.setVisible(true);
-					//mail_form_show(index,num_page[3]);
-					compose.textArea_1.setText("");
-					compose.textArea.setText("");
-					compose.textArea_2.setText("");
-					compose.textArea_3.setText("");
+					
 					
 					try {
 						   signin.app.setViewingOptions(signin.app.folder, filter, sort);
 						   IMail [] info=signin.app.listEmails(num_page[3]);
 						   
-						 
+						   
 						   
 						   String reciever = "";
 							while(!info[index].getReceiver().isEmpty()) {
@@ -936,8 +993,10 @@ public class mail_form extends JFrame {
 								atta+=att1[i].getPath();
 								atta+="\n";
 							}
-							  File file1=new File(signin.app.folder.getPath()+"/"+Integer.toString(info[index].getId()));
-							   signin.app.folder.deleteFolder(file1.getPath());
+							
+							 File file1=new File(signin.app.folder.getPath()+"/"+Integer.toString(info[index].getId()));
+						     signin.app.folder.deleteFolder(file1.getPath());
+						   
 					   }
 					   catch(Exception e9) {
 						   e9.getMessage();
@@ -987,6 +1046,7 @@ public class mail_form extends JFrame {
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.addActionListener(new ActionListener() {
+			@SuppressWarnings("static-access")
 			public void actionPerformed(ActionEvent e) {
 				File file= new File(signin.app.folder.getPath());
 				File[] files = file.listFiles();
@@ -996,52 +1056,59 @@ public class mail_form extends JFrame {
 		                mails.add(files[i]);
 		            }
 		        }
-		        int num=0;
-		        if(mails.size()%10==0){
-		        	num=mails.size()/10;
-		        }
-		        else {
-		        	num=(mails.size()/10)+1;
-		        }
+				 int num=0;
+			        
+			        if(mails.size()%10==0){
+			            num=mails.size()/10;
+			        }
+			        else {
+			            num=(mails.size()/10)+1;
+			        }
+			        
+			        
+			        doubleLinkedList contacts = new doubleLinkedList();
+			        for (int i=0 ; i<files.length;i++){
 
-		        doubleLinkedList contacts = new doubleLinkedList();
-		        for (int i=0 ; i<files.length;i++){
-		        	if (files[i].isFile()){
-		        		contacts.add(files[i]);
-		        	}
-		        }
-		        int num1=0;
-		        if(contacts.size()%10==0){
-		        	num1=contacts.size()/10;
-		        }
-		        else {
-		        	num1=(contacts.size()/10)+1;
-		        }
+			            if (files[i].isFile()){
+			                contacts.add(files[i]);
+			            }
+			        }
+			   
+			        int num1=0;
+			        
+			        if(contacts.size()%10==0){
+			            num1=contacts.size()/10;
+			        }
+			        else {
+			            num1=(contacts.size()/10)+1;
+			        }
+			        
 			   if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Contact")&& (num_page[0]<num1)) {
 						num_page[0]++;
 						remove_table(table);
 						fill_contact(table,num_page[0]);
-			   }
+				}   
 			   else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Inbox")&& (num_page[1]<num)) {
 						num_page[1]++;
 						remove_table(table);
 						fill_inbox_table(table,num_page[1]);
-			   }
-			   else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Sent") &&num_page[2]<num) {
+				}
+				else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Sent") &&num_page[2]<num) {
 						num_page[2]++;
 						remove_table(table);
 						fill_sent_table( table ,num_page[2]);
-			   }
-			   else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Draft")&&num_page[3]<num) {
+				}
+				else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Draft")&&num_page[3]<num) {
 						num_page[3]++;
 						remove_table(table);
 						fill_Draft_table( table ,num_page[3]);
-			   }
-			   else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Trash")&&num_page[4]<num) {
+				}
+				else if(signin.app.folder.checkEqualityOfTwoStrings(file.getName(), "Trash")&&num_page[4]<num) {
 						num_page[4]++;
 						remove_table(table);
 						fill_Trash_table( table , num_page[4]);
-			   }
+				}
+				
 			}
 		});
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1263,7 +1330,7 @@ public class mail_form extends JFrame {
 		lblNewLabel_4.setBounds(0, 0, 171, 59);
 		panel_11.add(lblNewLabel_4);
 		
-		JPanel panel_12 = new JPanel();
+		panel_12 = new JPanel();
 		panel_12.setLayout(null);
 		panel_12.setBackground(Color.BLACK);
 		panel_12.setBounds(961, 236, 182, 53);
@@ -1411,7 +1478,7 @@ public class mail_form extends JFrame {
 		lblAddcontact.setBackground(Color.BLACK);
 		lblAddcontact.setBounds(0, 0, 227, 53);
 		panel_13.add(lblAddcontact);
-		//this.setVisible(true);
+		this.setVisible(true);
 		this.setLocationRelativeTo(null);
 	}
 	void setcolor(JPanel panel) {
@@ -1669,4 +1736,53 @@ public class mail_form extends JFrame {
 		}
 	}
 	
+	private void contactfilter() {
+		panel_5.setVisible(false);
+		mntmNewMenuItem.setVisible(false);
+		mntmBydateoldesttonewest.setVisible(false);
+		mntmAscendingbysubject.setVisible(false);
+		mntmDescendingbysubject.setVisible(false);
+		mntmNewMenuItem_1.setVisible(false);
+		mntmDescendingbysender.setVisible(false);
+		mntmAscendingbypriority.setVisible(false);
+		mntmDescendingbypriority.setVisible(false);
+		mntmNewMenuItem_2.setVisible(false);
+		mntmDescendingbynumoflinesinbody.setVisible(false);
+		mntmAscendingbynumofwordsinbody.setVisible(false);
+		mntmDescendingbynumofwordsinbody.setVisible(false);
+		mntmAscendingbynumoflettersinbody.setVisible(false);
+		mntmDescendingbynumoflettersinbody.setVisible(false);
+		mntmAscendingbynumofreceivers.setVisible(false);
+		mntmDescendingbynumofreceivers.setVisible(false);
+		mntmAscendingbynumofattachments.setVisible(false);
+		mntmDescendingbynumofattachments.setVisible(false);
+		textField_1.setVisible(false);
+		mntmContactSort.setVisible(true);
+		mntmSortcontactdescending.setVisible(true);
+	}
+	
+	private void filter_sort() {
+		panel_5.setVisible(true);
+		mntmNewMenuItem.setVisible(true);
+		mntmBydateoldesttonewest.setVisible(true);
+		mntmAscendingbysubject.setVisible(true);
+		mntmDescendingbysubject.setVisible(true);
+		mntmNewMenuItem_1.setVisible(true);
+		mntmDescendingbysender.setVisible(true);
+		mntmAscendingbypriority.setVisible(true);
+		mntmDescendingbypriority.setVisible(true);
+		mntmNewMenuItem_2.setVisible(true);
+		mntmDescendingbynumoflinesinbody.setVisible(true);
+		mntmAscendingbynumofwordsinbody.setVisible(true);
+		mntmDescendingbynumofwordsinbody.setVisible(true);
+		mntmAscendingbynumoflettersinbody.setVisible(true);
+		mntmDescendingbynumoflettersinbody.setVisible(true);
+		mntmAscendingbynumofreceivers.setVisible(true);
+		mntmDescendingbynumofreceivers.setVisible(true);
+		mntmAscendingbynumofattachments.setVisible(true);
+		mntmDescendingbynumofattachments.setVisible(true);
+		textField_1.setVisible(true);
+		mntmContactSort.setVisible(false);
+		mntmSortcontactdescending.setVisible(false);
+	}
 }
