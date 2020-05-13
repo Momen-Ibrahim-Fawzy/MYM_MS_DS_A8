@@ -16,9 +16,12 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
 
 public class Add_contact extends JFrame {
@@ -137,11 +140,14 @@ public class Add_contact extends JFrame {
 						lblPleaseFillAll.setVisible(false);
 						try {
 							contact.addContact();
+							lblNewLabel.setVisible(false);
+							fill_contact(mail_form.table ,1);
 							setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 							dispose();
-						} catch (IOException e1) {
+						} catch (Exception e1) {
 							// TODO Auto-generated catch block
-							e1.printStackTrace();
+							lblNewLabel.setVisible(true);
+							e1.getMessage();
 						}
 					}
 				}
@@ -227,5 +233,35 @@ public class Add_contact extends JFrame {
 		lblAddcontactform.setBounds(260, 0, 157, 36);
 		panel_2.add(lblAddcontactform);
 		this.setLocationRelativeTo(null);;
+	}
+	
+	public void fill_contact(JTable table , int pachage) {
+		String [] arr=signIn.app.folder.getPath().split("/",5);
+		while(arr.length>2) {
+			signIn.app.folder.setPath(signIn.app.folder.backStep());
+			arr=signIn.app.folder.getPath().split("/",5);
+		}
+		signIn.app.folder.setPath(signIn.app.folder.getPath()+"/Contact");
+		try {
+			if (mail_form.sort.getType()!="sortContactAscending"&mail_form.sort.getType()!="sortContactDescending"){
+				mail_form.sort.setType("");
+			}
+			signIn.app.setViewingOptions(signIn.app.folder,mail_form.filter,mail_form.sort);
+			File [] info=signIn.app.folder.listContact(pachage,signIn.app.getMailsToBeShown());
+		
+        for(int i=0 ; i<info.length;i++) {
+			if(info[i]==null) {
+				break;
+			}
+			
+			String name=info[i].getName();
+			String[] name1=name.split(".txt");
+			table.setValueAt(name1[0],i, 0);
+		}
+		}
+        catch(Exception e1) {
+			e1.getMessage();
+		}
+        
 	}
 }
